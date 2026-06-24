@@ -137,17 +137,17 @@ Before any task, consult the relevant docs in [docs/agent/](docs/agent/). They
 are the source of truth; this file governs how you work, those govern what you
 build.
 
-| Doc | When to read it |
-| --- | --------------- |
-| [project-overview.md](docs/agent/project-overview.md) | Understand what SACS is, goals, and scope |
-| [architecture.md](docs/agent/architecture.md) | Layers, boundaries, data flow, feature shape |
-| [code-standards.md](docs/agent/code-standards.md) | TS/React conventions, tooling gates, commits |
-| [build-plan.md](docs/agent/build-plan.md) | Phased roadmap of what to build next |
+| Doc                                                   | When to read it                                 |
+| ----------------------------------------------------- | ----------------------------------------------- |
+| [project-overview.md](docs/agent/project-overview.md) | Understand what SACS is, goals, and scope       |
+| [architecture.md](docs/agent/architecture.md)         | Layers, boundaries, data flow, feature shape    |
+| [code-standards.md](docs/agent/code-standards.md)     | TS/React conventions, tooling gates, commits    |
+| [build-plan.md](docs/agent/build-plan.md)             | Phased roadmap of what to build next            |
 | [progress-tracker.md](docs/agent/progress-tracker.md) | Current status + decision log; update as you go |
-| [library-docs.md](docs/agent/library-docs.md) | Pinned dependency versions + official docs |
-| [ui-tokens.md](docs/agent/ui-tokens.md) | Design tokens (color, type, spacing, radius) |
-| [ui-rules.md](docs/agent/ui-rules.md) | UI/UX patterns, accessibility, forms |
-| [ui-registry.md](docs/agent/ui-registry.md) | Inventory of shared UI components |
+| [library-docs.md](docs/agent/library-docs.md)         | Pinned dependency versions + official docs      |
+| [ui-tokens.md](docs/agent/ui-tokens.md)               | Design tokens (color, type, spacing, radius)    |
+| [ui-rules.md](docs/agent/ui-rules.md)                 | UI/UX patterns, accessibility, forms            |
+| [ui-registry.md](docs/agent/ui-registry.md)           | Inventory of shared UI components               |
 
 Keep [progress-tracker.md](docs/agent/progress-tracker.md) and
 [ui-registry.md](docs/agent/ui-registry.md) updated as part of finishing a task.

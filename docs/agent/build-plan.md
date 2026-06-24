@@ -20,8 +20,11 @@ health endpoint. No product features.
 
 ## Phase 2 — Public + Leads
 
-- `(public)` marketing pages and layout.
-- Lead capture form → server action (`next-safe-action` + Zod) → `leads` table.
+- `(public)` marketing site: home, about (mission/vision), services
+  (university selection, scholarships, applications, SOP, visa coaching,
+  pre-departure), and contact.
+- Lead/consultation request form → server action (`next-safe-action` + Zod) →
+  `leads` table (capture intended degree: Master's/PhD, field, target country).
 - Rate limiting via Upstash on public mutations.
 - Confirmation email via Resend + React Email.
 
@@ -29,14 +32,17 @@ health endpoint. No product features.
 
 - Better Auth with Google OAuth in `src/server/auth`.
 - `(auth)` sign-in / callback pages.
-- `(admin)` shell with session guard.
-- Admin leads list + detail.
+- `(admin)` shell with session guard for SACS counselors/staff.
+- Admin leads list + detail (assign counselor, track status).
 
-## Phase 4 — Admissions
+## Phase 4 — Admissions & Advisory
 
-- Admissions data model and workflow states.
-- Applicant-facing status views.
-- Background jobs via QStash/Workflow for reminders and follow-ups.
+- Admissions data model and workflow states reflecting the SACS service
+  pipeline: enquiry → university shortlist → application prep → SOP review →
+  scholarship applications → interview prep → visa → pre-departure.
+- Applicant-facing status views so students see where they are in the journey.
+- Document handling for SOPs and application materials.
+- Background jobs via QStash/Workflow for deadline reminders and follow-ups.
 
 ## Phase 5 — Messaging
 

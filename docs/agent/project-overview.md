@@ -1,11 +1,52 @@
 # Project Overview
 
-## What SACS Is
+## About SACS
 
-SACS Study Abroad is a production-grade web platform for a study abroad
-agency. It captures and nurtures leads, runs admissions workflows, sends
-transactional email / SMS / WhatsApp, publishes a newsletter, and gives staff
-an admin surface to operate it all.
+**Study Abroad Consultancy Services (SACS)** is a specialized education
+consultancy that provides comprehensive admissions, scholarship, and financial
+planning support to Ghanaian students seeking **Master's and PhD opportunities
+in Europe**. SACS offers end-to-end advisory services: university selection,
+graduate school applications, scholarship identification and application
+support, statement of purpose (SOP) development, interview preparation, visa
+guidance, and pre-departure orientation.
+
+SACS addresses a critical challenge faced by many talented Ghanaian graduates:
+limited access to reliable information, professional guidance, and funding
+opportunities for international education. By simplifying the application
+process and increasing access to scholarships and affordable study options, the
+company aims to improve educational outcomes and contribute to Ghana's human
+capital development.
+
+## Mission
+
+To empower students to achieve their highest academic potential by providing
+personalized guidance, comprehensive resources, and unwavering support
+throughout their educational journey.
+
+## Vision
+
+To be the premier educational consultant that inspires and enables every
+Ghanaian student to access international education without barriers.
+
+## Services
+
+We make the entire study abroad journey easy — from shortlisting universities
+to getting a visa approved — so students can focus on building their future.
+
+- Personalized university and course selection
+- Scholarship and financial aid guidance
+- Application preparation and submission
+- Statement of purpose (SOP) development
+- Visa documentation and interview coaching
+- Pre-departure support and transition advice
+
+## The Platform
+
+This repository is the production-grade web platform that delivers those
+services online. It captures and nurtures prospective-student leads, runs
+admissions and application workflows, sends transactional email / SMS /
+WhatsApp, publishes a newsletter, offers an AI assistant for student questions,
+and gives SACS staff an admin surface to operate it all.
 
 The repository is currently a **production shell**: infrastructure,
 conventions, configuration, CI/CD, Docker, and security baselines are in place.
@@ -14,9 +55,10 @@ intentionally not implemented yet.
 
 ## Goals
 
-- Convert visitors into qualified admissions leads.
+- Convert visitors into qualified admissions leads for Master's/PhD applicants.
+- Guide students through university selection, scholarships, and applications.
 - Keep applicants informed across email, SMS, and WhatsApp.
-- Give staff a reliable admin and operations surface.
+- Give SACS staff a reliable admin and operations surface.
 - Stay secure, observable, and cheap to run on serverless infrastructure.
 
 ## Stack Baseline

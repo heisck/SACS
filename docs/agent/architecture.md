@@ -7,14 +7,14 @@ This file is the agent-facing summary.
 
 ## Layers
 
-| Layer            | Path                | Responsibility                                  |
-| ---------------- | ------------------- | ----------------------------------------------- |
-| Routes           | `src/app`           | App Router routes, route groups, handlers       |
-| Features         | `src/features/*`    | Product modules (admissions, leads, admin, …)   |
-| Server infra     | `src/server/*`      | auth, cache, db, integrations, jobs, logging    |
-| Shared UI        | `src/components`    | Cross-feature presentational components          |
-| Email            | `src/emails`        | React Email templates                            |
-| Schema           | `db/`               | Drizzle schema, migrations, seeds               |
+| Layer        | Path             | Responsibility                                |
+| ------------ | ---------------- | --------------------------------------------- |
+| Routes       | `src/app`        | App Router routes, route groups, handlers     |
+| Features     | `src/features/*` | Product modules (admissions, leads, admin, …) |
+| Server infra | `src/server/*`   | auth, cache, db, integrations, jobs, logging  |
+| Shared UI    | `src/components` | Cross-feature presentational components       |
+| Email        | `src/emails`     | React Email templates                         |
+| Schema       | `db/`            | Drizzle schema, migrations, seeds             |
 
 Route groups: `(public)` marketing, `(auth)` sign-in/OAuth, `(admin)` staff,
 `api` handlers/webhooks/health.

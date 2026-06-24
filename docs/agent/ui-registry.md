@@ -14,9 +14,9 @@ Build to the rules in [ui-rules.md](ui-rules.md) using tokens from
 
 ## Registry
 
-| Component | File | Status | Variants / Notes |
-| --------- | ---- | ------ | ---------------- |
-| _none yet_ | — | — | `src/components` only has `.gitkeep` |
+| Component  | File | Status | Variants / Notes                     |
+| ---------- | ---- | ------ | ------------------------------------ |
+| _none yet_ | —    | —      | `src/components` only has `.gitkeep` |
 
 ## Planned Primitives (build order)
 

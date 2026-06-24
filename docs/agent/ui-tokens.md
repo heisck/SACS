@@ -10,16 +10,16 @@ Single source of truth for design tokens. The project uses **Tailwind CSS v4**
 
 ## Color
 
-| Token            | Light value | Usage                          |
-| ---------------- | ----------- | ------------------------------ |
-| `--color-bg`     | `#ffffff`   | Page background                |
-| `--color-fg`     | `#111827`   | Primary text                   |
-| `--color-muted`  | `#6b7280`   | Secondary text                 |
-| `--color-border` | `#e5e7eb`   | Dividers, input borders        |
-| `--color-primary`| `#1d4ed8`   | Primary actions / links        |
-| `--color-success`| `#15803d`   | Success states                 |
-| `--color-warning`| `#b45309`   | Warnings                       |
-| `--color-danger` | `#b91c1c`   | Errors / destructive actions   |
+| Token             | Light value | Usage                        |
+| ----------------- | ----------- | ---------------------------- |
+| `--color-bg`      | `#ffffff`   | Page background              |
+| `--color-fg`      | `#111827`   | Primary text                 |
+| `--color-muted`   | `#6b7280`   | Secondary text               |
+| `--color-border`  | `#e5e7eb`   | Dividers, input borders      |
+| `--color-primary` | `#1d4ed8`   | Primary actions / links      |
+| `--color-success` | `#15803d`   | Success states               |
+| `--color-warning` | `#b45309`   | Warnings                     |
+| `--color-danger`  | `#b91c1c`   | Errors / destructive actions |
 
 Define dark-mode equivalents under a `[data-theme="dark"]` / `prefers-color-scheme`
 block when dark mode is introduced. `:root` currently pins `color-scheme: light`.
