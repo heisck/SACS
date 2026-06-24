@@ -23,20 +23,26 @@ _Last updated: 2026-06-24_
 
 | Item                                                   | Status |
 | ------------------------------------------------------ | ------ |
+| Design system: tokens (Editorial Split), fonts, grain  | ✅     |
+| Motion infra (Lenis smooth-scroll + GSAP Reveal)       | ✅     |
+| UI primitives (`cn`, `Button`, form controls, `Field`) | ✅     |
 | Env schema wired for required services                 | ⬜     |
 | Neon + Drizzle connection                              | ⬜     |
 | `leads` / `users` schema                               | ⬜     |
 | Logger + Sentry/OTel verified                          | ⬜     |
-| UI primitives (`cn`, `Button`, form controls, `Field`) | ⬜     |
 
 ## Phase 2 — Public + Leads
 
-| Item                              | Status |
-| --------------------------------- | ------ |
-| `(public)` pages + layout         | ⬜     |
-| Lead capture action → DB          | ⬜     |
-| Rate limiting on public mutations | ⬜     |
-| Confirmation email                | ⬜     |
+| Item                                          | Status |
+| --------------------------------------------- | ------ |
+| `(public)` layout + site header/footer        | ✅     |
+| Landing page (hero, stats, services, CTA)     | ✅     |
+| Pages: about, services, universities, contact | ✅     |
+| Legal pages: privacy, terms                   | ✅     |
+| Contact form + `/api/contact` (validate+log)  | ✅     |
+| Lead capture action → DB                      | ⬜     |
+| Rate limiting on public mutations             | ⬜     |
+| Confirmation email                            | ⬜     |
 
 ## Phase 3 — Auth + Admin
 

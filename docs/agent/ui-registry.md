@@ -14,22 +14,31 @@ Build to the rules in [ui-rules.md](ui-rules.md) using tokens from
 
 ## Registry
 
-| Component  | File | Status | Variants / Notes                     |
-| ---------- | ---- | ------ | ------------------------------------ |
-| _none yet_ | —    | —      | `src/components` only has `.gitkeep` |
+| Component                                             | File                                      | Status | Variants / Notes                               |
+| ----------------------------------------------------- | ----------------------------------------- | ------ | ---------------------------------------------- |
+| `cn()`                                                | `src/lib/cn.ts`                           | stable | clsx + tailwind-merge                          |
+| `Button` / `buttonVariants`                           | `src/components/ui/button.tsx`            | stable | primary, gold, outline, ghost, link · sm/md/lg |
+| `Container` / `Section`                               | `src/components/ui/container.tsx`         | stable | max-w gutter + vertical rhythm                 |
+| `Eyebrow`                                             | `src/components/ui/eyebrow.tsx`           | stable | uppercase label with rule                      |
+| `Input` / `Textarea` / `Select`                       | `src/components/ui/input.tsx`             | stable | forwardRef, RHF-ready, aria-invalid            |
+| `Field`                                               | `src/components/ui/field.tsx`             | stable | label + control + error wrapper                |
+| `Prose`                                               | `src/components/ui/prose.tsx`             | stable | long-form/legal text styling                   |
+| `SmoothScroll`                                        | `src/components/motion/smooth-scroll.tsx` | stable | Lenis root; reduced-motion aware               |
+| `Reveal`                                              | `src/components/motion/reveal.tsx`        | stable | GSAP fade-rise on scroll; `stagger`            |
+| `Logo`                                                | `src/components/site/logo.tsx`            | stable | wordmark + split dot                           |
+| `SiteHeader` / `SiteFooter`                           | `src/components/site/*`                   | stable | site chrome for `(public)`                     |
+| Social glyphs                                         | `src/components/site/social-icons.tsx`    | stable | inline SVG (lucide has no brand icons)         |
+| Sections (Hero, Services, Stats, CtaBand, PageHeader) | `src/components/sections/*`               | stable | marketing building blocks                      |
 
-## Planned Primitives (build order)
+## Planned Primitives (next)
 
-1. `cn()` utility — `clsx` + `tailwind-merge`.
-2. `Button` — variants: primary, secondary, ghost, destructive; sizes sm/md/lg.
-3. `Input`, `Textarea`, `Select`, `Checkbox` — form controls with label + error.
-4. `Field` — label + control + error wrapper for `react-hook-form`.
-5. `Card` — surface container.
-6. `Badge` — status pills.
-7. `Alert` — inline success/warning/danger messaging.
-8. `Spinner` / `Skeleton` — loading states.
-9. `Modal` / `Dialog` — accessible overlay.
-10. `Toast` — transient notifications.
+1. `Card` — surface container.
+2. `Badge` — status pills.
+3. `Alert` — inline success/warning/danger messaging.
+4. `Spinner` / `Skeleton` — loading states.
+5. `Modal` / `Dialog` — accessible overlay (admin + auth).
+6. `Toast` — transient notifications.
+7. `ImageCropper` — admin crop/rotate/zoom (react-easy-crop).
 
 ## How to Add an Entry
 
