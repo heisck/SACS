@@ -24,20 +24,27 @@ export function HeroScene() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // On scroll the letters fall and exit the bottom of this section (the
-      // section clips them — they vanish "behind the tree").
-      gsap.to(".hero-letter", {
-        y: () => window.innerHeight * 1.15,
-        rotate: () => gsap.utils.random(-30, 30),
-        autoAlpha: 0,
-        ease: "power1.in",
-        stagger: { each: 0.035, from: "random" },
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true
-        }
+      const wordEls = Array.from(
+        root.current?.querySelectorAll<HTMLElement>("[data-word]") ?? []
+      );
+      // Reaching each word (as you scroll) triggers its letters to fall — in a
+      // mixed/random order, single file, at their own gravity pace (NOT scrubbed
+      // to the scroll), exiting the bottom of the section "behind the tree".
+      wordEls.forEach((wordEl, idx) => {
+        const letters = wordEl.querySelectorAll(".hero-letter");
+        gsap.to(letters, {
+          y: () => window.innerHeight * 1.1,
+          rotate: () => gsap.utils.random(-40, 40),
+          autoAlpha: 0,
+          ease: "power2.in",
+          duration: 1.2,
+          stagger: { each: 0.14, from: "random" },
+          scrollTrigger: {
+            trigger: root.current,
+            start: `${8 + idx * 16}% top`,
+            toggleActions: "play none none reverse"
+          }
+        });
       });
     },
     { scope: root }
@@ -64,8 +71,8 @@ export function HeroScene() {
 
       <h1 className="absolute inset-0 flex flex-col items-center justify-center text-center font-display leading-[0.82] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
         <span className="sr-only">Study without Borders</span>
-        {words.map((w) => (
-          <span key={w.text} aria-hidden className="block">
+        {words.map((w, idx) => (
+          <span key={w.text} data-word={idx} aria-hidden className="block">
             {[...w.text].map((ch, i) => (
               <span
                 key={`${w.text}-${i}`}
