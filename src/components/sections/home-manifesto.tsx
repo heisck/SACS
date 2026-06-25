@@ -62,19 +62,35 @@ export function HomeManifesto() {
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // As this section scrolls into view, the statement's letters drop in from
-      // above its top edge (clipped) — emerging "out the other side of the tree".
-      gsap.from(".manifesto-letter", {
-        y: () => -window.innerHeight,
-        autoAlpha: 0,
-        rotate: () => gsap.utils.random(-18, 18),
-        ease: "power1.out",
-        stagger: { each: 0.025, from: "start" },
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top bottom",
-          end: "top top",
-          scrub: true
+      // Letters pour in from above the top edge at their own gravity pace (not
+      // tied to scroll speed). Reverses on scroll up via onLeaveBack.
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(
+        ".manifesto-letter",
+        {
+          y: () => -window.innerHeight * 0.6,
+          autoAlpha: 0,
+          rotate: () => gsap.utils.random(-25, 25)
+        },
+        {
+          y: 0,
+          autoAlpha: 1,
+          rotate: 0,
+          ease: "power2.out",
+          duration: 0.9,
+          stagger: { each: 0.045, from: "random" }
+        }
+      );
+
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top 85%",
+        end: "bottom top",
+        onUpdate: (self) => {
+          // Direction-driven: pour in on the way down, pour out the moment you
+          // start scrolling up — each at its own pace.
+          if (self.direction === 1) tl.play();
+          else tl.reverse();
         }
       });
     },

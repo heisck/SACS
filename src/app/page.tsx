@@ -7,8 +7,7 @@ import {
 } from "@/components/menu/staggered-menu";
 import { HeroScene } from "@/components/sections/hero-scene";
 import { HomeManifesto } from "@/components/sections/home-manifesto";
-import { Services } from "@/components/sections/services";
-import { HomeDestinations } from "@/components/sections/home-destinations";
+import { ServicesGallery } from "@/components/sections/services-gallery";
 import { HomeProcess } from "@/components/sections/home-process";
 import { Stats } from "@/components/sections/stats";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -57,14 +56,7 @@ export default function HomePage() {
       <main id="main">
         <HeroScene />
         <HomeManifesto />
-
-        <Panel tone="paper">
-          <Services />
-        </Panel>
-
-        <Panel tone="cool">
-          <HomeDestinations />
-        </Panel>
+        <ServicesGallery />
 
         <Panel tone="ink">
           <HomeProcess />

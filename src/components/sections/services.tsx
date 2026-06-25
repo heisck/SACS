@@ -3,45 +3,59 @@ import type { LucideIcon } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
+import { cn } from "@/lib/cn";
 
-type Service = { id: string; title: string; body: string; Icon: LucideIcon };
+type Service = {
+  id: string;
+  title: string;
+  body: string;
+  Icon: LucideIcon;
+  span: string;
+};
 
+// One rectangle, divided by thin lines into mixed squares and rectangles.
 const services: Service[] = [
   {
     id: "selection",
     title: "University & course selection",
     body: "We shortlist programmes that fit your goals, budget, and profile — not a generic list.",
-    Icon: Compass
+    Icon: Compass,
+    span: "lg:col-span-2 lg:row-span-2"
   },
   {
     id: "scholarships",
     title: "Scholarship & financial aid",
     body: "We surface the funding you qualify for and help you build a competitive application.",
-    Icon: Award
+    Icon: Award,
+    span: "lg:col-span-2"
   },
   {
     id: "applications",
     title: "Application prep & submission",
-    body: "Deadlines, documents, and portals handled end to end so nothing slips.",
-    Icon: FileText
+    body: "Deadlines, documents, and portals handled end to end.",
+    Icon: FileText,
+    span: "lg:col-span-1"
   },
   {
     id: "sop",
     title: "Statement of purpose",
-    body: "We shape a focused, authentic SOP that makes admissions committees pay attention.",
-    Icon: PenLine
+    body: "A focused, authentic SOP that earns attention.",
+    Icon: PenLine,
+    span: "lg:col-span-1"
   },
   {
     id: "visa",
     title: "Visa & interview coaching",
-    body: "Documentation, mock interviews, and guidance to walk in prepared and confident.",
-    Icon: ShieldCheck
+    body: "Documentation and mock interviews so you walk in prepared.",
+    Icon: ShieldCheck,
+    span: "lg:col-span-2"
   },
   {
     id: "predeparture",
     title: "Pre-departure support",
-    body: "Housing, travel, and settling-in advice so day one abroad feels like home.",
-    Icon: Plane
+    body: "Housing, travel, and settling-in advice for day one abroad.",
+    Icon: Plane,
+    span: "lg:col-span-2"
   }
 ];
 
@@ -60,21 +74,23 @@ export function Services() {
           </p>
         </div>
 
-        <Reveal
-          stagger
-          className="mt-14 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {services.map(({ id, title, body, Icon }) => (
+        <Reveal className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line lg:auto-rows-[13rem] lg:grid-cols-4">
+          {services.map(({ id, title, body, Icon, span }) => (
             <article
               key={id}
               id={id}
-              className="group flex scroll-mt-28 flex-col gap-4 bg-surface p-7 transition-colors hover:bg-paper"
+              className={cn(
+                "group flex scroll-mt-28 flex-col justify-between gap-6 bg-surface p-7 transition-colors hover:bg-paper",
+                span
+              )}
             >
               <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-ink/5 text-ink transition-colors group-hover:bg-gold group-hover:text-white">
                 <Icon size={20} />
               </span>
-              <h3 className="font-display text-xl">{title}</h3>
-              <p className="text-pretty text-ink-soft">{body}</p>
+              <div>
+                <h3 className="font-display text-xl">{title}</h3>
+                <p className="mt-2 text-pretty text-sm text-ink-soft">{body}</p>
+              </div>
             </article>
           ))}
         </Reveal>
