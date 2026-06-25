@@ -1,9 +1,18 @@
-import Image from "next/image";
+import { IntroReveal } from "@/components/motion/intro-reveal";
+import { SnapController } from "@/components/motion/snap-controller";
 import {
   StaggeredMenu,
   type StaggeredMenuItem,
   type StaggeredMenuSocialItem
 } from "@/components/menu/staggered-menu";
+import { HeroMorph } from "@/components/sections/hero-morph";
+import { Services } from "@/components/sections/services";
+import { HomeDestinations } from "@/components/sections/home-destinations";
+import { HomeProcess } from "@/components/sections/home-process";
+import { Stats } from "@/components/sections/stats";
+import { CtaBand } from "@/components/sections/cta-band";
+import { Panel } from "@/components/sections/panel";
+import { SiteFooter } from "@/components/site/site-footer";
 
 const menuItems: StaggeredMenuItem[] = [
   { label: "Home", link: "/", ariaLabel: "Go to home" },
@@ -23,35 +32,11 @@ const socialItems: StaggeredMenuSocialItem[] = [
   { label: "Facebook", link: "#" }
 ];
 
-export default function LandingPage() {
+export default function HomePage() {
   return (
-    <main id="main" className="relative h-dvh w-full overflow-hidden bg-ink">
-      <Image
-        src="/images/hero-graduate.png"
-        alt="A graduate in cap and gown at a desk, between maps of Africa and Europe."
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center"
-      />
-
-      {/* Light legibility wash at the bottom — keeps the upper-left Africa map clear */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent"
-      />
-
-      <h1 className="absolute bottom-0 left-0 w-fit text-center font-display text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
-        <span className="block text-[clamp(3.5rem,12vw,9.5rem)] font-bold uppercase leading-[0.82] tracking-tight">
-          Study
-        </span>
-        <span className="block py-1 text-[clamp(1.75rem,5vw,3.5rem)] italic leading-none">
-          without
-        </span>
-        <span className="block text-[clamp(3.5rem,12vw,9.5rem)] font-bold uppercase leading-[0.82] tracking-tight">
-          Borders
-        </span>
-      </h1>
+    <>
+      <IntroReveal />
+      <SnapController />
 
       <StaggeredMenu
         items={menuItems}
@@ -65,7 +50,34 @@ export default function LandingPage() {
         accentColor="#a9772b"
         colors={["#2f3a44", "#a9772b"]}
         changeMenuColorOnOpen
+        isFixed
       />
-    </main>
+
+      <main id="main">
+        <HeroMorph />
+
+        <Panel tone="paper">
+          <Services />
+        </Panel>
+
+        <Panel tone="cool">
+          <HomeDestinations />
+        </Panel>
+
+        <Panel tone="ink">
+          <HomeProcess />
+        </Panel>
+
+        <Panel className="bg-ink">
+          <Stats />
+        </Panel>
+
+        <Panel tone="warm">
+          <CtaBand />
+        </Panel>
+      </main>
+
+      <SiteFooter />
+    </>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/sections/page-header";
 import { Services } from "@/components/sections/services";
 import { CtaBand } from "@/components/sections/cta-band";
+import { SectionBg } from "@/components/sections/section-bg";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -17,7 +18,10 @@ export default function ServicesPage() {
         title="Everything you need, from shortlist to visa."
         intro="We make the entire study-abroad journey easy — so you can focus on building your future."
       />
-      <Services />
+      <div className="relative isolate">
+        <SectionBg tone="paper" />
+        <Services />
+      </div>
       <CtaBand />
     </>
   );

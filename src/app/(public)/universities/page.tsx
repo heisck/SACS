@@ -3,6 +3,7 @@ import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { PageHeader } from "@/components/sections/page-header";
 import { CtaBand } from "@/components/sections/cta-band";
+import { SectionBg } from "@/components/sections/section-bg";
 import { Reveal } from "@/components/motion/reveal";
 
 export const metadata: Metadata = {
@@ -55,7 +56,8 @@ export default function UniversitiesPage() {
         intro="We match students with programmes across Europe and guide every application. Specific partner institutions are managed by our team and shared during your consultation."
       />
 
-      <Section>
+      <Section className="relative isolate">
+        <SectionBg tone="cool" />
         <Container>
           <Eyebrow>Where we place students</Eyebrow>
           <Reveal

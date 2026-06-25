@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 import { PageHeader } from "@/components/sections/page-header";
 import { ContactForm } from "@/features/leads/components/contact-form";
+import { SectionBg } from "@/components/sections/section-bg";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -35,7 +36,8 @@ export default function ContactPage() {
         intro="Book a free consultation and we'll outline your route to a funded degree in Europe."
       />
 
-      <Section>
+      <Section className="relative isolate">
+        <SectionBg tone="cool" />
         <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="flex flex-col gap-8">
             {details.map(({ Icon, label, value, href }) => (
