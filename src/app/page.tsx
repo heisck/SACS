@@ -5,7 +5,8 @@ import {
   type StaggeredMenuItem,
   type StaggeredMenuSocialItem
 } from "@/components/menu/staggered-menu";
-import { HeroMorph } from "@/components/sections/hero-morph";
+import { HeroScene } from "@/components/sections/hero-scene";
+import { HomeManifesto } from "@/components/sections/home-manifesto";
 import { Services } from "@/components/sections/services";
 import { HomeDestinations } from "@/components/sections/home-destinations";
 import { HomeProcess } from "@/components/sections/home-process";
@@ -54,7 +55,8 @@ export default function HomePage() {
       />
 
       <main id="main">
-        <HeroMorph />
+        <HeroScene />
+        <HomeManifesto />
 
         <Panel tone="paper">
           <Services />
