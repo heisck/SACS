@@ -6,6 +6,8 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
 import "./globals.css";
 import "../components/menu/staggered-menu.css";
+import "../components/menu/flowing-menu.css";
+import "../components/menu/infinite-menu.css";
 
 const inter = Inter({
   subsets: ["latin"],

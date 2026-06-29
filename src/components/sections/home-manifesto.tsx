@@ -45,6 +45,9 @@ const heights = ["h-40", "h-28", "h-36", "h-32"];
 export function HomeManifesto() {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
+  // Tracks the user's last real input (wheel/touch), so snap auto-fit scrolling
+  // — which produces no input — never flips the animation direction.
+  const inputDir = useRef(0);
 
   useEffect(() => {
     const el = root.current;
@@ -57,6 +60,31 @@ export function HomeManifesto() {
     );
     io.observe(el);
     return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let lastTouchY = 0;
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY !== 0) inputDir.current = e.deltaY > 0 ? 1 : -1;
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches[0]?.clientY ?? 0;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0]?.clientY ?? lastTouchY;
+      if (y !== lastTouchY) {
+        inputDir.current = y < lastTouchY ? 1 : -1;
+        lastTouchY = y;
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
   }, []);
 
   useGSAP(
@@ -86,11 +114,12 @@ export function HomeManifesto() {
         trigger: root.current,
         start: "top 85%",
         end: "bottom top",
-        onUpdate: (self) => {
-          // Direction-driven: pour in on the way down, pour out the moment you
-          // start scrolling up — each at its own pace.
-          if (self.direction === 1) tl.play();
-          else tl.reverse();
+        onUpdate: () => {
+          // Driven by real user input, not raw scroll direction: pour in when the
+          // user scrolls down, pour out only when they scroll up themselves.
+          // Snap auto-fit moves the page without input, so it's ignored.
+          if (inputDir.current === 1) tl.play();
+          else if (inputDir.current === -1) tl.reverse();
         }
       });
     },

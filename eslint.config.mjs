@@ -7,6 +7,12 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
+  {
+    // Vendored React Bits WebGL component: gl-matrix's numeric indexing fights
+    // strict noUncheckedIndexedAccess, so the file opts out with @ts-nocheck.
+    files: ["src/components/menu/infinite-menu.tsx"],
+    rules: { "@typescript-eslint/ban-ts-comment": "off" }
+  },
   globalIgnores([
     ".next/**",
     "coverage/**",

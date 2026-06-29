@@ -1,54 +1,60 @@
-import { Container } from "@/components/ui/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/motion/reveal";
+import InfiniteMenu, { type InfiniteMenuItem } from "@/components/menu/infinite-menu";
 
 const steps = [
-  { n: "01", title: "Discovery", body: "We learn your goals, field, and budget." },
+  {
+    n: "01",
+    title: "Discovery",
+    description: "We learn your goals, field, and budget.",
+    color: "#a9772b"
+  },
   {
     n: "02",
     title: "Shortlist",
-    body: "Programmes matched to you, not a generic list."
+    description: "Programmes matched to you, not a generic list.",
+    color: "#b4542f"
   },
   {
     n: "03",
     title: "Apply",
-    body: "Applications, SOPs, and documents handled end to end."
+    description: "Applications, SOPs, and documents handled end to end.",
+    color: "#2f3a44"
   },
   {
     n: "04",
     title: "Scholarships",
-    body: "We surface and pursue the funding you qualify for."
+    description: "We surface and pursue the funding you qualify for.",
+    color: "#c9a14e"
   },
   {
     n: "05",
     title: "Visa & interview",
-    body: "Documentation and mock interviews until you're ready."
+    description: "Documentation and mock interviews until you're ready.",
+    color: "#7c3c1c"
   },
-  { n: "06", title: "Departure", body: "Housing, travel, and settling-in support." }
+  {
+    n: "06",
+    title: "Departure",
+    description: "Housing, travel, and settling-in support.",
+    color: "#3a322a"
+  }
 ];
+
+const disc = (n: string, color: string) =>
+  `data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" fill="${color}"/><text x="256" y="312" font-family="Georgia, serif" font-size="240" font-weight="700" fill="#f5f0e8" text-anchor="middle">${n}</text></svg>`
+  )}`;
+
+const journey: InfiniteMenuItem[] = steps.map((s) => ({
+  image: disc(s.n, s.color),
+  link: "#",
+  title: s.title,
+  description: s.description
+}));
 
 export function HomeProcess() {
   return (
-    <Container>
-      <Reveal>
-        <Eyebrow className="text-paper/70">The journey</Eyebrow>
-        <h2 className="mt-5 max-w-2xl text-balance text-[clamp(2rem,4.5vw,3.5rem)] text-paper">
-          One clear path, from first chat to first day abroad.
-        </h2>
-      </Reveal>
-
-      <Reveal
-        stagger
-        className="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {steps.map((s) => (
-          <div key={s.n} className="border-t border-paper/20 pt-5">
-            <span className="font-display text-2xl text-gold-soft">{s.n}</span>
-            <h3 className="mt-3 font-display text-2xl text-paper">{s.title}</h3>
-            <p className="mt-2 text-pretty text-paper/70">{s.body}</p>
-          </div>
-        ))}
-      </Reveal>
-    </Container>
+    <section data-snap className="relative h-dvh w-full bg-ink">
+      <InfiniteMenu items={journey} />
+    </section>
   );
 }
