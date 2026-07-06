@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import { PageHeader } from "@/components/sections/page-header";
+import { MagneticCollage } from "@/components/sections/magnetic-collage";
 import { TestimonialsReel } from "@/components/sections/testimonials-reel";
 import { CtaBand } from "@/components/sections/cta-band";
 import { SectionBg } from "@/components/sections/section-bg";
@@ -55,13 +55,16 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
+      <MagneticCollage
+        eyebrow="About SACS"
         title="Talent is everywhere. Opportunity shouldn't be the barrier."
         intro="Study Abroad Consultancy Services helps Ghanaian graduates reach Master's and PhD programmes in Europe — with the information, guidance, and funding access that too often go missing."
         image={{
           src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
           alt: "Students working together around a laptop."
         }}
+        tags={["Mission", "Ghana → Europe", "Funded"]}
+        cta={[{ label: "Talk to us", href: "/contact" }]}
       />
 
       {/* Mission / vision — numbered editorial rows that rise into view. */}

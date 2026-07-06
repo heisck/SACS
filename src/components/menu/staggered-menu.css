@@ -67,20 +67,11 @@
   overflow: visible;
 }
 
-/* Closed-menu header inverts against whatever section is behind it, so the
- * toggle and logo stay readable over dark heroes AND light paper alike. */
-.staggered-menu-wrapper:not([data-open]) .staggered-menu-header {
-  mix-blend-mode: difference;
-  color: #fff;
-}
-
-.staggered-menu-wrapper:not([data-open]) .sm-toggle {
-  color: #fff !important;
-}
-
-.staggered-menu-wrapper:not([data-open]) .sm-logo-img {
-  filter: brightness(0) invert(1);
-}
+/* Closed-menu colour is driven by JS (SiteMenu samples the section behind the
+ * header and flips the toggle/logo between light and dark) — see staggered-menu.tsx.
+ * A static colour can't work because the fixed menu overlays dark heroes AND
+ * light paper, and mix-blend-mode can't reach the page through the fixed
+ * wrapper's stacking context. */
 
 .sm-toggle:focus-visible {
   outline: 2px solid var(--sm-accent, #fff);

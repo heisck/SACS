@@ -19,10 +19,18 @@ export function IntroReveal() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         setDone(true);
+        window.dispatchEvent(new CustomEvent("sacs:intro-done"));
         return;
       }
 
-      const tl = gsap.timeline({ onComplete: () => setDone(true) });
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setDone(true);
+          // Signal the hero (and anything else) that the curtain has fully
+          // retracted, so entrance animations don't play hidden behind it.
+          window.dispatchEvent(new CustomEvent("sacs:intro-done"));
+        }
+      });
 
       // 1 — the acronym: initials pop in one after another.
       tl.from(".intro-initial", {

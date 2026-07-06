@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -92,6 +91,7 @@ function letterStyle(
 
 export function HeroScene() {
   const stage = useRef<HTMLElement>(null);
+  const introRef = useRef<gsap.core.Timeline | null>(null);
 
   useGSAP(
     () => {
@@ -101,7 +101,12 @@ export function HeroScene() {
 
       // Load: each word's letters emerge FROM its own corner into place,
       // one word at a time — the same path they leave along when scrolling.
-      const intro = gsap.timeline({ delay: 2.4 });
+      // Paused until the IntroReveal curtain finishes (sacs:intro-done), so
+      // the entrance is actually visible instead of playing behind the curtain.
+      const intro = gsap.timeline({
+        paused: true,
+        onComplete: () => ScrollTrigger.refresh()
+      });
       words.forEach((w) => {
         intro.from(
           `.hero-word-${w.corner} .hero-letter`,
@@ -117,6 +122,7 @@ export function HeroScene() {
           "<0.25"
         );
       });
+      introRef.current = intro;
 
       // Scroll: the letters flow back INTO their corners — "Study" pours into
       // the top-left, "without" bottom-left, "Borders" bottom-right.
@@ -147,17 +153,33 @@ export function HeroScene() {
     { scope: stage }
   );
 
+  // Start the corner-word entrance once the intro curtain has retracted.
+  // Falls back to a timeout in case the curtain is absent or never signals.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const start = () => introRef.current?.play();
+    window.addEventListener("sacs:intro-done", start, { once: true });
+    const fallback = window.setTimeout(start, 6000);
+    return () => {
+      window.removeEventListener("sacs:intro-done", start);
+      window.clearTimeout(fallback);
+    };
+  }, []);
+
   return (
     <section ref={stage} className="relative h-[200vh] bg-ink">
       <div className="sticky top-0 h-dvh w-full overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=80&sat=-100"
-          alt="An airliner crossing a dramatic sky — borders passing beneath."
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-label="An airliner crossing a dramatic sky — borders passing beneath."
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        >
+          <source src="/images/planflying.mp4" type="video/mp4" />
+        </video>
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-black/40"
@@ -203,7 +225,7 @@ export function HeroScene() {
         <div className="hero-extra absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 p-8 text-center">
           <HeroSubcopy
             text="We guide Ghanaian students to Master's and PhD admissions and scholarships across Europe, from your first shortlist to a stamped visa."
-            delayMs={2600}
+            delayMs={1000}
             className="max-w-88 text-balance text-base leading-snug text-white/90 [text-shadow:0_1px_14px_rgba(0,0,0,0.55)]"
           />
           <div className="flex flex-col items-stretch gap-3 sm:flex-row">

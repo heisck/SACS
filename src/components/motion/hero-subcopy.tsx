@@ -16,8 +16,24 @@ export function HeroSubcopy({ text, className, delayMs = 0 }: HeroSubcopyProps) 
 
   useEffect(() => {
     if (delayMs === 0) return;
-    const t = setTimeout(() => setShow(true), delayMs);
-    return () => clearTimeout(t);
+    // Wait for the intro curtain to finish, then wait delayMs before the
+    // decrypt starts — so the text doesn't appear behind the curtain.
+    let timer: number | undefined;
+    let fallback: number | undefined;
+    let done = false;
+    const start = () => {
+      if (done) return;
+      done = true;
+      timer = window.setTimeout(() => setShow(true), delayMs);
+      if (fallback) window.clearTimeout(fallback);
+    };
+    window.addEventListener("sacs:intro-done", start, { once: true });
+    fallback = window.setTimeout(start, 6000);
+    return () => {
+      window.removeEventListener("sacs:intro-done", start);
+      if (fallback) window.clearTimeout(fallback);
+      if (timer) window.clearTimeout(timer);
+    };
   }, [delayMs]);
 
   return (

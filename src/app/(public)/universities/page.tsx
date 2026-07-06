@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import { TearHero } from "@/components/sections/tear-hero";
+import { MagneticCollage } from "@/components/sections/magnetic-collage";
 import { FanCarousel, type FanCard } from "@/components/sections/fan-carousel";
 import { CtaBand } from "@/components/sections/cta-band";
 import { SectionBg } from "@/components/sections/section-bg";
@@ -75,11 +75,16 @@ const fanItems: FanCard[] = destinations.map((d) => ({
 export default function UniversitiesPage() {
   return (
     <>
-      <TearHero
-        image="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=2000&q=80"
-        alt="The facade of a grand European university."
+      <MagneticCollage
+        eyebrow="Universities & destinations"
         title="Your degree, somewhere remarkable in Europe."
         intro="We match students with programmes across Europe and guide every application. Specific partner institutions are managed by our team and shared during your consultation."
+        image={{
+          src: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=2000&q=80",
+          alt: "The facade of a grand European university."
+        }}
+        tags={["Masters", "PhD", "Europe", "8 destinations"]}
+        cta={[{ label: "Plan your route", href: "/contact" }]}
       />
 
       <Section className="relative isolate flex min-h-dvh items-center overflow-hidden">

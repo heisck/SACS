@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
-import { PageHeader } from "@/components/sections/page-header";
+import { MagneticCollage } from "@/components/sections/magnetic-collage";
 import { ContactForm } from "@/features/leads/components/contact-form";
 import { SectionBg } from "@/components/sections/section-bg";
 import { siteConfig } from "@/config/site";
@@ -31,10 +31,11 @@ const details = [
 export default function ContactPage() {
   return (
     <>
-      <PageHeader
+      <MagneticCollage
         eyebrow="Contact"
         title="Let's map your path abroad."
         intro="Book a free consultation and we'll outline your route to a funded degree in Europe."
+        tags={["Free consult", "1-on-1"]}
       />
 
       <Section className="relative isolate">

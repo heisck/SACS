@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Container, Section } from "@/components/ui/container";
-import { PageHeader } from "@/components/sections/page-header";
+import { MagneticCollage } from "@/components/sections/magnetic-collage";
 import { Prose } from "@/components/ui/prose";
 import { SectionBg } from "@/components/sections/section-bg";
 import { siteConfig } from "@/config/site";
@@ -13,10 +13,11 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <>
-      <PageHeader
+      <MagneticCollage
         eyebrow="Legal"
         title="Terms of Service"
         intro="Last updated June 2026."
+        tags={["Terms", "Fair use"]}
       />
       <Section className="relative isolate">
         <SectionBg tone="paper" />

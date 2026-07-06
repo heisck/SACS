@@ -49,8 +49,17 @@ const journey: InfiniteMenuItem[] = steps.map((s) => ({
 
 export function HomeProcess() {
   return (
-    <section data-snap className="relative h-dvh w-full bg-ink">
+    <section
+      data-snap
+      className="relative h-dvh w-full overflow-hidden bg-paper"
+    >
+      <p className="pointer-events-none absolute left-1/2 top-[clamp(1.25rem,4.5vh,2.75rem)] z-[4] -translate-x-1/2 font-display text-xs font-semibold uppercase tracking-[0.22em] text-clay">
+        The journey
+      </p>
       <InfiniteMenu items={journey} />
+      <p className="pointer-events-none absolute bottom-[clamp(1.25rem,4.5vh,2.75rem)] left-1/2 z-[4] hidden -translate-x-1/2 font-display text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-ink-soft/60 md:block">
+        Drag to explore
+      </p>
       {/* The drag canvas eats touch scrolling — give phones a way out. */}
       <ScrollDownButton />
     </section>
