@@ -65,11 +65,11 @@ export default function HomePage() {
         <section data-snap className="h-dvh w-full">
           <FlowingMenu
             items={statItems}
-            bgColor="#0a0a0a"
-            textColor="#fafafa"
-            marqueeBgColor="#c9c9c9"
-            marqueeTextColor="#0a0a0a"
-            borderColor="#171717"
+            bgColor="#fafafa"
+            textColor="#0a0a0a"
+            marqueeBgColor="#0a0a0a"
+            marqueeTextColor="#fafafa"
+            borderColor="#e0e0e0"
           />
         </section>
 

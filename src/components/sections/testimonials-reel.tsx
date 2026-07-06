@@ -63,7 +63,7 @@ export function TestimonialsReel({ items = defaultItems }: TestimonialsReelProps
     setIndex((i) => (i + dir + items.length) % items.length);
 
   return (
-    <Section className="border-t border-line">
+    <Section>
       <Container>
         <Eyebrow>Student stories</Eyebrow>
         <Reveal className="mt-10">

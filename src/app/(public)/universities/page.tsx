@@ -104,7 +104,7 @@ export default function UniversitiesPage() {
         </div>
       </Section>
 
-      <Section className="relative isolate border-t border-line">
+      <Section className="relative isolate">
         <SectionBg tone="cool" />
         <Container>
           <Eyebrow>Where we place students</Eyebrow>

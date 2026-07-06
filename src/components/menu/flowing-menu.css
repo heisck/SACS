@@ -22,6 +22,24 @@
   border-top: 1px solid;
 }
 
+/* Giant stroked index numeral — editorial accent behind each row label. */
+.menu__item-num {
+  position: absolute;
+  left: clamp(0.75rem, 4vw, 3rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 14vh, 9rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke-width: 1.5px;
+  opacity: 0.22;
+}
+
 .menu__item:first-child {
   border-top: none;
 }

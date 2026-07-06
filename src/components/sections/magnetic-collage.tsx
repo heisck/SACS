@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { Route } from "next";
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { MaskedLines } from "@/components/motion/masked-lines";
 import { Container } from "@/components/ui/container";
@@ -99,11 +100,10 @@ export function MagneticCollage({
     ? [{ src: image.src, alt: image.alt }, ...FALLBACK_IMAGES]
     : FALLBACK_IMAGES;
 
-  const chips: Chip[] = CHIP_LAYOUT.map((c, i) => ({
-    ...c,
-    src: images[i % images.length].src,
-    alt: images[i % images.length].alt
-  }));
+  const chips: Chip[] = CHIP_LAYOUT.map((c, i) => {
+    const img = images[i % images.length] ?? FALLBACK_IMAGES[0]!;
+    return { ...c, src: img.src, alt: img.alt };
+  });
 
   const tagItems = TAG_LAYOUT.map((t, i) => ({
     ...t,
@@ -148,6 +148,7 @@ export function MagneticCollage({
       for (let i = 0; i < floaters.length; i++) {
         const el = floaters[i];
         const s = state[i];
+        if (!el || !s) continue;
         // Home centre in viewport coords (offsetLeft/Top ignore transforms).
         const homeX = rect.left + el.offsetLeft + el.offsetWidth / 2;
         const homeY = rect.top + el.offsetTop + el.offsetHeight / 2;
@@ -263,7 +264,7 @@ export function MagneticCollage({
               {cta.map((c, i) => (
                 <Link
                   key={c.href + i}
-                  href={c.href}
+                  href={c.href as Route}
                   className={buttonVariants({
                     variant: i === 0 ? "primary" : "outline",
                     size: "lg"

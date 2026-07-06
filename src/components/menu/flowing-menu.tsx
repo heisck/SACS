@@ -36,6 +36,7 @@ export function FlowingMenu({
           <MenuItem
             key={idx}
             {...item}
+            index={idx}
             speed={speed}
             textColor={textColor}
             marqueeBgColor={marqueeBgColor}
@@ -49,6 +50,7 @@ export function FlowingMenu({
 }
 
 type MenuItemProps = FlowingMenuItem & {
+  index: number;
   speed: number;
   textColor: string;
   marqueeBgColor: string;
@@ -72,6 +74,7 @@ function MenuItem({
   text,
   image,
   tagline,
+  index,
   speed,
   textColor,
   marqueeBgColor,
@@ -148,6 +151,13 @@ function MenuItem({
 
   return (
     <div className="menu__item" ref={itemRef} style={{ borderColor }}>
+      <span
+        aria-hidden
+        className="menu__item-num"
+        style={{ WebkitTextStrokeColor: textColor }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
       <a
         className="menu__item-link"
         href={link}

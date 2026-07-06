@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 
 export function CtaBand() {
   return (
-    <Section className="border-t border-line">
+    <Section>
       <Container>
         <Reveal className="relative overflow-hidden bg-surface px-8 py-16 text-center md:px-16 md:py-24">
           <div

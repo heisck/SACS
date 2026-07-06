@@ -72,7 +72,7 @@ const services: Service[] = [
 
 export function Services() {
   return (
-    <Section id="services" className="border-t border-line">
+    <Section id="services">
       <Container>
         <div className="max-w-2xl">
           <Eyebrow>What we do</Eyebrow>

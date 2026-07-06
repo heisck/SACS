@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
 import { cn } from "@/lib/cn";
 
 type StatTile = {
@@ -13,23 +14,23 @@ type StatTile = {
 };
 
 const tiles: StatTile[] = [
-  { value: "4×", label: "More offers per applicant", className: "bg-gold-soft text-ink" },
-  { value: "70%", label: "Leave with funding secured", className: "bg-clay text-white" }
+  { value: "4×", label: "More offers per applicant", className: "bg-brand-100 text-ink" },
+  { value: "70%", label: "Leave with funding secured", className: "bg-brand-200 text-ink" }
 ];
 
 const trailingTile: StatTile = {
   value: "100%",
   label: "Guided to day one abroad",
-  className: "bg-slate text-white"
+  className: "bg-brand-300 text-ink"
 };
 
 /**
- * Staggered stat band — small colour tiles rising toward a featured story
- * card, in the style of the case-studies bento.
+ * Staggered stat band — light tiles with count-up numbers rising toward a
+ * featured story card. Paper stage so the page background runs through.
  */
 export function ResultsBento() {
   return (
-    <Section className="border-t border-line">
+    <Section>
       <Container>
         <div className="max-w-2xl">
           <Eyebrow>Results</Eyebrow>
@@ -53,7 +54,7 @@ export function ResultsBento() {
               )}
             >
               <p className="origin-bottom-left text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none transition-transform duration-500 ease-out-expo group-hover:scale-125">
-                {tile.value}
+                <CountUp value={tile.value} />
               </p>
               <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
                 {tile.label}
@@ -61,21 +62,21 @@ export function ResultsBento() {
             </div>
           ))}
 
-          <article className="relative flex min-h-115 flex-col overflow-hidden bg-ink p-8 text-paper md:flex-[4.4] md:p-10">
+          <article className="relative flex min-h-115 flex-col overflow-hidden border border-line bg-surface p-8 text-ink md:flex-[4.4] md:p-10">
             <div className="max-w-75">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] opacity-80">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-clay">
                 Student story
               </p>
               <h3 className="mt-2 text-balance font-display text-[clamp(1.4rem,2.4vw,1.9rem)] leading-tight">
                 From Legon to a funded Master&apos;s in Delft.
               </h3>
-              <p className="mt-3 text-pretty text-sm leading-relaxed opacity-90">
+              <p className="mt-3 text-pretty text-sm leading-relaxed text-ink-soft">
                 A focused shortlist, a sharper SOP, and a scholarship application that
                 landed — the same route we map for every student.
               </p>
               <Link
                 href="/contact"
-                className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-soft transition-colors hover:text-paper"
+                className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-clay transition-colors hover:text-ink"
               >
                 Start your route
                 <ArrowRight size={14} />
@@ -85,13 +86,13 @@ export function ResultsBento() {
             <div className="mt-8 grid flex-1 grid-cols-1 items-end gap-5 sm:grid-cols-[1fr_1.05fr]">
               <div>
                 <p className="text-[clamp(3.25rem,5.5vw,4.5rem)] font-semibold leading-none">
-                  92%
+                  <CountUp value="92%" />
                 </p>
                 <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
                   Visa approvals, first attempt
                 </p>
               </div>
-              <div className="relative h-40 overflow-hidden border border-white/10 sm:h-45 md:h-50">
+              <div className="relative h-40 overflow-hidden border border-line sm:h-45 md:h-50">
                 <Image
                   src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80"
                   alt="Graduates throwing their caps at a commencement ceremony."
@@ -110,7 +111,7 @@ export function ResultsBento() {
             )}
           >
             <p className="origin-bottom-left text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none transition-transform duration-500 ease-out-expo group-hover:scale-125">
-              {trailingTile.value}
+              <CountUp value={trailingTile.value} />
             </p>
             <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
               {trailingTile.label}
@@ -118,7 +119,10 @@ export function ResultsBento() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-6 flex justify-center bg-ink px-6 py-4 text-center text-paper">
+        <Reveal
+          delay={0.1}
+          className="mt-6 flex justify-center bg-brand-100 px-6 py-4 text-center text-ink"
+        >
           <p className="text-pretty text-sm">
             Your numbers could be next — a free consultation is where every story here
             began.

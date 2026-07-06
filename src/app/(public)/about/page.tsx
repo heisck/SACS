@@ -111,7 +111,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <Section className="relative isolate flex min-h-dvh items-center border-t border-line">
+      <Section className="relative isolate flex min-h-dvh items-center">
         <SectionBg tone="cool" />
         <Container className="w-full">
           <Eyebrow>What we stand for</Eyebrow>
