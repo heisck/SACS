@@ -1,7 +1,6 @@
 import { IntroReveal } from "@/components/motion/intro-reveal";
 import { SnapController } from "@/components/motion/snap-controller";
 import { SiteMenu } from "@/components/site/site-menu";
-import { PreHero } from "@/components/sections/pre-hero";
 import { HeroScene } from "@/components/sections/hero-scene";
 import { HomeManifesto } from "@/components/sections/home-manifesto";
 import { ServicesGallery } from "@/components/sections/services-gallery";
@@ -48,14 +47,11 @@ export default function HomePage() {
       <IntroReveal />
       <SnapController />
 
-      {/* First screen is light paper now, so the toggle opens dark. */}
-      <SiteMenu scheme="dark" />
+      {/* Dark hero photo → light toggle; hero words own the corners, so no wordmark. */}
+      <SiteMenu scheme="light" showLogo={false} />
 
       <main id="main">
-        <PreHero />
-        <div id="story">
-          <HeroScene />
-        </div>
+        <HeroScene />
         <HomeManifesto />
         {/* GSAP pins the gallery inside a pin-spacer (a DOM move React can't
             see). This wrapper keeps main's child list React-owned so hot

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import { PageHeader } from "@/components/sections/page-header";
+import { TearHero } from "@/components/sections/tear-hero";
 import { FanCarousel, type FanCard } from "@/components/sections/fan-carousel";
 import { CtaBand } from "@/components/sections/cta-band";
 import { SectionBg } from "@/components/sections/section-bg";
@@ -75,29 +75,28 @@ const fanItems: FanCard[] = destinations.map((d) => ({
 export default function UniversitiesPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="Universities & destinations"
+      <TearHero
+        image="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=2000&q=80"
+        alt="The facade of a grand European university."
         title="Your degree, somewhere remarkable in Europe."
         intro="We match students with programmes across Europe and guide every application. Specific partner institutions are managed by our team and shared during your consultation."
-        image={{
-          src: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1400&q=80",
-          alt: "The facade of a grand European university."
-        }}
       />
 
-      <Section className="relative isolate overflow-hidden">
+      <Section className="relative isolate flex min-h-dvh items-center overflow-hidden">
         <SectionBg tone="warm" />
-        <Container>
-          <div className="text-center">
-            <Eyebrow className="justify-center">Pick a city, we know the way</Eyebrow>
-            <h2 className="mt-5 text-balance text-[clamp(2rem,4.5vw,3.5rem)]">
-              Eight destinations. One route: yours.
-            </h2>
-          </div>
-        </Container>
-        <Reveal className="mt-10">
-          <FanCarousel items={fanItems} />
-        </Reveal>
+        <div className="w-full">
+          <Container>
+            <div className="text-center">
+              <Eyebrow className="justify-center">Pick a city, we know the way</Eyebrow>
+              <h2 className="mt-5 text-balance text-[clamp(2rem,4.5vw,3.5rem)]">
+                Eight destinations. One route: yours.
+              </h2>
+            </div>
+          </Container>
+          <Reveal className="mt-10">
+            <FanCarousel items={fanItems} />
+          </Reveal>
+        </div>
       </Section>
 
       <Section className="relative isolate border-t border-line">
@@ -106,7 +105,7 @@ export default function UniversitiesPage() {
           <Eyebrow>Where we place students</Eyebrow>
           <Reveal
             stagger
-            className="mt-10 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-10 grid gap-px overflow-hidden bg-line sm:grid-cols-2 lg:grid-cols-4"
           >
             {destinations.map((dest) => (
               <article key={dest.country} className="group bg-surface">

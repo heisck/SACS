@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion } from "motion/react";
+import { ScrollDownButton } from "@/components/motion/scroll-down-button";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -127,6 +128,7 @@ export function ServicesGallery() {
   const row = useRef<HTMLDivElement>(null);
   const currentGroup = useRef(0);
   const [activeGroup, setActiveGroup] = useState(0);
+  const [lightbox, setLightbox] = useState<Card | null>(null);
 
   useGSAP(
     () => {
@@ -195,7 +197,8 @@ export function ServicesGallery() {
             key={c.id}
             id={c.id}
             data-group={c.group}
-            className="relative flex w-full shrink-0 items-end overflow-hidden bg-surface p-7 md:h-full md:w-auto"
+            onClick={() => setLightbox(c)}
+            className="relative flex w-full shrink-0 cursor-zoom-in items-end overflow-hidden bg-surface p-7 md:h-full md:w-auto"
             style={{ aspectRatio: c.aspect }}
           >
             <Image
@@ -229,6 +232,39 @@ export function ServicesGallery() {
           </motion.h2>
         </AnimatePresence>
       </div>
+
+      <ScrollDownButton />
+
+      {/* Lightbox: just the image with its caption beneath — no card chrome. */}
+      <AnimatePresence>
+        {lightbox ? (
+          <motion.div
+            key="gallery-lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lightbox.label}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setLightbox(null)}
+            className="fixed inset-0 z-90 flex cursor-zoom-out flex-col items-center justify-center gap-5 bg-ink/95 p-6"
+          >
+            <motion.img
+              src={lightbox.image}
+              alt={lightbox.label}
+              initial={{ scale: 0.94 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="max-h-[75vh] w-auto max-w-full object-contain"
+            />
+            <p className="font-display text-xl text-paper md:text-2xl">
+              {lightbox.label}
+            </p>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }

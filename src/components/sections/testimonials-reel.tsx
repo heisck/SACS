@@ -67,16 +67,16 @@ export function TestimonialsReel({ items = defaultItems }: TestimonialsReelProps
       <Container>
         <Eyebrow>Student stories</Eyebrow>
         <Reveal className="mt-10">
-          <div className="relative flex w-full flex-col items-stretch gap-2.5 overflow-hidden rounded-2xl border border-line bg-surface md:min-h-80 md:flex-row">
+          <div className="relative flex w-full flex-col items-stretch gap-2.5 overflow-hidden border border-line bg-surface md:min-h-80 md:flex-row">
             {/* portrait column */}
             <div className="relative flex h-64 w-full shrink-0 items-center justify-center self-stretch overflow-hidden bg-paper md:h-auto md:w-95">
               <div
                 aria-hidden
-                className="absolute -left-10 top-8 h-28 w-28 rounded-xl border border-line bg-linear-to-b from-paper to-surface blur-[1px]"
+                className="absolute -left-10 top-8 h-28 w-28 border border-line bg-linear-to-b from-paper to-surface blur-[1px]"
               />
               <div
                 aria-hidden
-                className="absolute -right-8 bottom-10 h-24 w-24 rounded-xl border border-line bg-linear-to-b from-paper to-surface blur-[1px]"
+                className="absolute -right-8 bottom-10 h-24 w-24 border border-line bg-linear-to-b from-paper to-surface blur-[1px]"
               />
               <AnimatePresence mode="wait">
                 <motion.div
@@ -85,7 +85,7 @@ export function TestimonialsReel({ items = defaultItems }: TestimonialsReelProps
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -18, scale: 0.96 }}
                   transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
-                  className="relative h-44 w-44 overflow-hidden rounded-xl shadow-raise md:h-52 md:w-52"
+                  className="relative h-44 w-44 overflow-hidden shadow-raise md:h-52 md:w-52"
                 >
                   <Image
                     src={active.image}
@@ -137,7 +137,7 @@ export function TestimonialsReel({ items = defaultItems }: TestimonialsReelProps
                   type="button"
                   aria-label="Previous story"
                   onClick={() => go(-1)}
-                  className="grid h-9 w-9 place-items-center rounded-full border border-ink/15 text-ink transition-transform hover:scale-108 hover:border-ink/40 active:scale-95"
+                  className="grid h-9 w-9 place-items-center border border-ink/15 text-ink transition-transform hover:scale-108 hover:border-ink/40 active:scale-95"
                 >
                   <svg
                     className="h-3.5 w-3.5"
@@ -155,7 +155,7 @@ export function TestimonialsReel({ items = defaultItems }: TestimonialsReelProps
                   type="button"
                   aria-label="Next story"
                   onClick={() => go(1)}
-                  className="grid h-9 w-9 place-items-center rounded-full border border-ink/15 text-ink transition-transform hover:scale-108 hover:border-ink/40 active:scale-95"
+                  className="grid h-9 w-9 place-items-center border border-ink/15 text-ink transition-transform hover:scale-108 hover:border-ink/40 active:scale-95"
                 >
                   <svg
                     className="h-3.5 w-3.5"

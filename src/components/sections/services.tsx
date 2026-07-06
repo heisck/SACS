@@ -85,7 +85,7 @@ export function Services() {
           </p>
         </div>
 
-        <Reveal className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line lg:auto-rows-[13rem] lg:grid-cols-4">
+        <Reveal className="mt-12 grid grid-cols-2 gap-px overflow-hidden bg-line lg:auto-rows-[13rem] lg:grid-cols-4">
           {services.map(({ id, title, body, Icon, span, image }) => (
             <article
               key={id}
@@ -107,14 +107,14 @@ export function Services() {
                   />
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-linear-to-t from-ink/85 via-ink/35 to-ink/10"
+                    className="absolute inset-0 bg-linear-to-t from-ink via-ink/45 to-ink/10"
                   />
                 </>
               ) : null}
 
               <span
                 className={cn(
-                  "relative inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors",
+                  "relative grid h-11 w-11 shrink-0 grow-0 place-items-center self-start rounded-full transition-colors",
                   image
                     ? "bg-white/15 text-white backdrop-blur-sm group-hover:bg-gold"
                     : "bg-ink/5 text-ink group-hover:bg-gold group-hover:text-white"
@@ -123,11 +123,19 @@ export function Services() {
                 <Icon size={20} />
               </span>
               <div className="relative">
-                <h3 className="font-display text-xl">{title}</h3>
+                <h3
+                  className={cn(
+                    "font-display text-xl",
+                    image &&
+                      "inline-block bg-ink/80 px-2 py-1 text-white backdrop-blur-sm"
+                  )}
+                >
+                  {title}
+                </h3>
                 <p
                   className={cn(
                     "mt-2 text-pretty text-sm",
-                    image ? "text-white/85" : "text-ink-soft"
+                    image ? "text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]" : "text-ink-soft"
                   )}
                 >
                   {body}

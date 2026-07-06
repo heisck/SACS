@@ -9,7 +9,7 @@ export function CtaBand() {
   return (
     <Section className="border-t border-line">
       <Container>
-        <Reveal className="relative overflow-hidden rounded-2xl bg-surface px-8 py-16 text-center md:px-16 md:py-24">
+        <Reveal className="relative overflow-hidden bg-surface px-8 py-16 text-center md:px-16 md:py-24">
           <div
             aria-hidden
             className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full bg-clay/10 blur-3xl"

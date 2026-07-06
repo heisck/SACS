@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -12,17 +13,82 @@ import { cn } from "@/lib/cn";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Each word is pinned to a viewport corner; "Study" bleeds out past the
-// top-left corner (clipped by the stage's overflow-hidden). Sizes unchanged.
-const words = [
-  {
-    text: "Study",
-    cursive: false,
-    position: "-top-[0.16em] -left-[0.06em] text-left"
-  },
-  { text: "without", cursive: true, position: "bottom-0 left-0" },
-  { text: "Borders", cursive: false, position: "bottom-0 right-0 text-right" }
+/**
+ * Each word bends around its own viewport corner: the letters run along one
+ * edge, turn at the corner, and continue along the other edge.
+ *   Study   — top-left:  "St" up the left edge, "u" on the corner, "dy" along the top
+ *   without — bottom-left: down the left edge, around, along the bottom
+ *   Borders — bottom-right: along the bottom, around, up the right edge
+ */
+type CornerWord = {
+  text: string;
+  corner: "tl" | "bl" | "br";
+  cursive: boolean;
+  /** Distance of the letter arc from its corner, in vmin. */
+  radius: number;
+};
+
+const words: CornerWord[] = [
+  { text: "Study", corner: "tl", cursive: false, radius: 26 },
+  { text: "without", corner: "bl", cursive: true, radius: 24 },
+  { text: "Borders", corner: "br", cursive: false, radius: 34 }
 ];
+
+/* Letters are centred on the arc, so keep every centre at least INSET from
+ * the edges — half a letter is ~5vmin at the largest size, so nothing gets
+ * clipped and every word sits fully in frame. */
+const INSET = 8;
+
+/** Per-letter position + tangent rotation along a quarter-circle arc. */
+function letterStyle(
+  corner: CornerWord["corner"],
+  radius: number,
+  index: number,
+  count: number
+): { style: React.CSSProperties; dx: number; dy: number } {
+  // 0 → first letter (on the starting edge), 1 → last letter (on the ending edge).
+  const t = count > 1 ? index / (count - 1) : 0.5;
+  const rad = (t * Math.PI) / 2;
+  const along = INSET + radius * Math.sin(rad); // distance along the ending edge
+  const out = INSET + radius * Math.cos(rad); // distance along the starting edge
+
+  // (dx, dy) walks this letter from its resting spot INTO its corner, in vmin.
+  switch (corner) {
+    case "tl":
+      // Start on the left edge (below the corner) reading upward, end on the top edge.
+      return {
+        style: {
+          left: `${along.toFixed(2)}vmin`,
+          top: `${out.toFixed(2)}vmin`,
+          transform: `translate(-50%, -50%) rotate(${(-90 * (1 - t)).toFixed(2)}deg)`
+        },
+        dx: -along,
+        dy: -out
+      };
+    case "bl":
+      // Start on the left edge (above the corner) reading downward, end on the bottom edge.
+      return {
+        style: {
+          left: `${along.toFixed(2)}vmin`,
+          bottom: `${out.toFixed(2)}vmin`,
+          transform: `translate(-50%, 50%) rotate(${(90 * (1 - t)).toFixed(2)}deg)`
+        },
+        dx: -along,
+        dy: out
+      };
+    case "br":
+      // Start on the bottom edge (left of the corner), end up the right edge reading upward.
+      return {
+        style: {
+          right: `${out.toFixed(2)}vmin`,
+          bottom: `${along.toFixed(2)}vmin`,
+          transform: `translate(50%, 50%) rotate(${(-90 * t).toFixed(2)}deg)`
+        },
+        dx: out,
+        dy: along
+      };
+  }
+}
 
 export function HeroScene() {
   const stage = useRef<HTMLElement>(null);
@@ -31,8 +97,29 @@ export function HeroScene() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      // Pinned (sticky) stage: as you scroll, the letters fall completely —
-      // mixed order, letter by letter — before the next section arrives.
+      const vmin = () => Math.min(window.innerWidth, window.innerHeight) / 100;
+
+      // Load: each word's letters emerge FROM its own corner into place,
+      // one word at a time — the same path they leave along when scrolling.
+      const intro = gsap.timeline({ delay: 2.4 });
+      words.forEach((w) => {
+        intro.from(
+          `.hero-word-${w.corner} .hero-letter`,
+          {
+            x: (_, el: Element) => Number((el as HTMLElement).dataset.dx) * vmin(),
+            y: (_, el: Element) => Number((el as HTMLElement).dataset.dy) * vmin(),
+            autoAlpha: 0,
+            scale: 0.4,
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: 0.06
+          },
+          "<0.25"
+        );
+      });
+
+      // Scroll: the letters flow back INTO their corners — "Study" pours into
+      // the top-left, "without" bottom-left, "Borders" bottom-right.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: stage.current,
@@ -42,15 +129,16 @@ export function HeroScene() {
         }
       });
 
-      // Subcopy + buttons clear out the moment the fall begins.
+      // Subcopy + buttons clear out the moment the flow begins.
       tl.to(".hero-extra", { autoAlpha: 0, duration: 0.08 }, 0).to(
         ".hero-letter",
         {
-          y: () => window.innerHeight * 1.1,
-          rotate: () => gsap.utils.random(-45, 45),
+          x: (_, el: Element) => Number((el as HTMLElement).dataset.dx) * vmin(),
+          y: (_, el: Element) => Number((el as HTMLElement).dataset.dy) * vmin(),
+          scale: 0.3,
           autoAlpha: 0,
           ease: "power2.in",
-          stagger: { each: 0.025, from: "random" },
+          stagger: { each: 0.02, from: "end" },
           duration: 0.5
         },
         0
@@ -63,8 +151,8 @@ export function HeroScene() {
     <section ref={stage} className="relative h-[200vh] bg-ink">
       <div className="sticky top-0 h-dvh w-full overflow-hidden">
         <Image
-          src="/images/hero-graduate.png"
-          alt="A graduate in cap and gown at a desk, between maps of Africa and Europe."
+          src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=80&sat=-100"
+          alt="An airliner crossing a dramatic sky — borders passing beneath."
           fill
           priority
           sizes="100vw"
@@ -72,32 +160,47 @@ export function HeroScene() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent"
+          className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-black/40"
         />
 
-        <h1 className="absolute inset-0 font-display leading-[0.82] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
+        <h1 className="absolute inset-0 font-display text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
           <span className="sr-only">Study without Borders</span>
           {words.map((w) => (
-            <span
-              key={w.text}
-              aria-hidden
-              className={cn(
-                "absolute block whitespace-nowrap text-[clamp(3rem,12vw,10rem)] font-bold uppercase tracking-tight",
-                w.cursive && "text-[clamp(2rem,7vw,5rem)] italic normal-case",
-                w.position
-              )}
-            >
-              {[...w.text].map((ch, i) => (
-                <span key={`${w.text}-${i}`} className="hero-letter inline-block">
-                  {ch}
-                </span>
-              ))}
+            <span key={w.text} aria-hidden className={`hero-word-${w.corner}`}>
+              {[...w.text].map((ch, i) => {
+                const { style, dx, dy } = letterStyle(
+                  w.corner,
+                  w.radius,
+                  i,
+                  w.text.length
+                );
+                return (
+                  <span
+                    key={`${w.text}-${i}`}
+                    className={cn(
+                      "absolute block leading-none",
+                      w.cursive
+                        ? "text-[clamp(1.5rem,4.5vw,3.25rem)] italic"
+                        : "text-[clamp(2rem,7vw,6rem)] font-bold uppercase tracking-tight"
+                    )}
+                    style={style}
+                  >
+                    <span
+                      className="hero-letter block"
+                      data-dx={dx.toFixed(2)}
+                      data-dy={dy.toFixed(2)}
+                    >
+                      {ch}
+                    </span>
+                  </span>
+                );
+              })}
             </span>
           ))}
         </h1>
 
-        {/* Top-right so it clears "Borders", now pinned to the bottom-right. */}
-        <div className="hero-extra absolute right-0 top-20 z-20 flex flex-col items-end gap-6 p-8 text-right md:top-24 md:p-12">
+        {/* Corners are owned by the words now, so the copy holds the centre. */}
+        <div className="hero-extra absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 p-8 text-center">
           <HeroSubcopy
             text="We guide Ghanaian students to Master's and PhD admissions and scholarships across Europe, from your first shortlist to a stamped visa."
             delayMs={2600}
@@ -112,6 +215,7 @@ export function HeroScene() {
               )}
             >
               Book a consultation
+              <ArrowRight size={18} />
             </Link>
             <Link
               href="/services#scholarships"

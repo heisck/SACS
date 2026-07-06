@@ -41,7 +41,7 @@ export default function ContactPage() {
         <SectionBg tone="cool" />
         <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="flex flex-col gap-8">
-            <div className="relative aspect-16/10 overflow-hidden rounded-2xl shadow-soft">
+            <div className="img-reflect relative aspect-16/10 overflow-hidden shadow-soft">
               <Image
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
                 alt="The SACS counselling office."
@@ -56,7 +56,7 @@ export default function ContactPage() {
             </div>
             {details.map(({ Icon, label, value, href }) => (
               <div key={label} className="flex items-start gap-4">
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink">
+                <span className="grid h-11 w-11 shrink-0 place-items-center bg-ink/5 text-ink">
                   <Icon size={20} />
                 </span>
                 <div>
@@ -78,7 +78,7 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <div className="rounded-2xl border border-line bg-surface p-6 md:p-10">
+          <div className="border border-line bg-surface p-6 md:p-10">
             <ContactForm />
           </div>
         </Container>

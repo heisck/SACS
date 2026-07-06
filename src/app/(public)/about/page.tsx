@@ -7,12 +7,26 @@ import { TestimonialsReel } from "@/components/sections/testimonials-reel";
 import { CtaBand } from "@/components/sections/cta-band";
 import { SectionBg } from "@/components/sections/section-bg";
 import { Reveal } from "@/components/motion/reveal";
+import { MaskedLines } from "@/components/motion/masked-lines";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "SACS is an education consultancy helping Ghanaian graduates access Master's and PhD opportunities in Europe."
 };
+
+const pillars = [
+  {
+    n: "01",
+    label: "Our mission",
+    body: "To empower students to achieve their highest academic potential through personalized guidance, comprehensive resources, and unwavering support throughout their educational journey."
+  },
+  {
+    n: "02",
+    label: "Our vision",
+    body: "To be the premier educational consultant that inspires and enables every Ghanaian student to access international education without barriers."
+  }
+];
 
 const values = [
   {
@@ -42,7 +56,6 @@ export default function AboutPage() {
   return (
     <>
       <PageHeader
-        eyebrow="About SACS"
         title="Talent is everywhere. Opportunity shouldn't be the barrier."
         intro="Study Abroad Consultancy Services helps Ghanaian graduates reach Master's and PhD programmes in Europe — with the information, guidance, and funding access that too often go missing."
         image={{
@@ -51,28 +64,32 @@ export default function AboutPage() {
         }}
       />
 
-      <Section className="relative isolate">
+      {/* Mission / vision — numbered editorial rows that rise into view. */}
+      <Section className="relative isolate flex min-h-dvh items-center">
         <SectionBg tone="paper" />
-        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal>
-            <Eyebrow>Our mission</Eyebrow>
-            <p className="mt-5 text-balance font-display text-2xl leading-snug text-ink md:text-3xl">
-              To empower students to achieve their highest academic potential through
-              personalized guidance, comprehensive resources, and unwavering support
-              throughout their educational journey.
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <Eyebrow>Our vision</Eyebrow>
-            <p className="mt-5 text-balance font-display text-2xl leading-snug text-ink md:text-3xl">
-              To be the premier educational consultant that inspires and enables every
-              Ghanaian student to access international education without barriers.
-            </p>
-          </Reveal>
+        <Container className="w-full">
+          <div className="flex flex-col">
+            {pillars.map((p) => (
+              <div
+                key={p.n}
+                className="group grid gap-6 border-t border-line py-14 last:border-b md:grid-cols-[6rem_10rem_1fr] md:gap-10 md:py-20"
+              >
+                <span className="font-display text-5xl font-bold text-line transition-colors duration-500 group-hover:text-gold md:text-7xl">
+                  {p.n}
+                </span>
+                <Eyebrow className="self-start pt-3">{p.label}</Eyebrow>
+                <MaskedLines>
+                  <p className="text-balance font-display text-2xl leading-snug text-ink md:text-4xl">
+                    {p.body}
+                  </p>
+                </MaskedLines>
+              </div>
+            ))}
+          </div>
         </Container>
       </Section>
 
-      <section className="relative isolate h-[60vh] min-h-80 w-full overflow-hidden">
+      <section className="relative isolate h-[70vh] min-h-80 w-full overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1800&q=80"
           alt="Graduates throwing their caps in celebration."
@@ -80,22 +97,22 @@ export default function AboutPage() {
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/30 to-transparent" />
-        <Container className="absolute inset-x-0 bottom-0 pb-12">
-          <Reveal>
+        <div className="absolute inset-0 bg-linear-to-t from-ink/85 via-ink/30 to-transparent" />
+        <Container className="absolute inset-x-0 bottom-0 pb-14">
+          <MaskedLines>
             <p className="max-w-2xl text-balance font-display text-2xl text-white md:text-4xl">
               Every year, brilliant Ghanaian graduates miss out — not for lack of
               talent, but for lack of guidance. We close that gap.
             </p>
-          </Reveal>
+          </MaskedLines>
         </Container>
       </section>
 
-      <Section className="relative isolate border-t border-line">
+      <Section className="relative isolate flex min-h-dvh items-center border-t border-line">
         <SectionBg tone="cool" />
-        <Container>
+        <Container className="w-full">
           <Eyebrow>What we stand for</Eyebrow>
-          <Reveal stagger className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-line md:grid-cols-3">
+          <Reveal stagger className="mt-10 grid gap-px overflow-hidden bg-line md:grid-cols-3">
             {values.map((value) => (
               <div key={value.title} className="group bg-surface">
                 <div className="relative aspect-16/10 overflow-hidden">
@@ -105,6 +122,10 @@ export default function AboutPage() {
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105"
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-paper/25 transition-opacity duration-500 group-hover:opacity-0"
                   />
                 </div>
                 <div className="p-7">

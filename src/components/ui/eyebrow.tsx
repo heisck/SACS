@@ -16,7 +16,6 @@ export function Eyebrow({
         className
       )}
     >
-      <span className="h-px w-6 bg-gold" aria-hidden />
       {children}
     </span>
   );

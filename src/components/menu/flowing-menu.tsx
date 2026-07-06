@@ -117,23 +117,12 @@ function MenuItem({
     };
   }, [text, image, repetitions, speed]);
 
-  const handleMouseEnter = (ev: MouseEvent<HTMLAnchorElement>) => {
-    if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
-    const rect = itemRef.current.getBoundingClientRect();
-    const edge = findClosestEdge(
-      ev.clientX - rect.left,
-      ev.clientY - rect.top,
-      rect.width,
-      rect.height
-    );
-    gsap
-      .timeline({ defaults: animationDefaults })
-      .set(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
-      .set(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0)
-      .to([marqueeRef.current, marqueeInnerRef.current], { y: "0%" }, 0);
-  };
+  // Click-driven: first click slides the marquee in and starts it, the next
+  // click slides it away — no hover behavior.
+  const [openMarquee, setOpenMarquee] = useState(false);
 
-  const handleMouseLeave = (ev: MouseEvent<HTMLAnchorElement>) => {
+  const handleToggle = (ev: MouseEvent<HTMLAnchorElement>) => {
+    ev.preventDefault();
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(
@@ -142,10 +131,19 @@ function MenuItem({
       rect.width,
       rect.height
     );
-    gsap
-      .timeline({ defaults: animationDefaults })
-      .to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
-      .to(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0);
+    if (!openMarquee) {
+      gsap
+        .timeline({ defaults: animationDefaults })
+        .set(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+        .set(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0)
+        .to([marqueeRef.current, marqueeInnerRef.current], { y: "0%" }, 0);
+    } else {
+      gsap
+        .timeline({ defaults: animationDefaults })
+        .to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+        .to(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0);
+    }
+    setOpenMarquee((v) => !v);
   };
 
   return (
@@ -153,8 +151,8 @@ function MenuItem({
       <a
         className="menu__item-link"
         href={link}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onClick={handleToggle}
+        aria-expanded={openMarquee}
         style={{ color: textColor }}
       >
         {text}

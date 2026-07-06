@@ -21,20 +21,24 @@ export function HeroSubcopy({ text, className, delayMs = 0 }: HeroSubcopyProps) 
   }, [delayMs]);
 
   return (
-    <div className={className}>
+    <div className={cn("relative", className)}>
+      {/* The real text always reserves the final box, so the scramble can
+          never push the buttons below around while glyph widths jitter. */}
+      <span aria-hidden className="invisible block">
+        {text}
+      </span>
       {show ? (
-        <DecryptedText
-          text={text}
-          animateOn="view"
-          sequential
-          speed={22}
-          revealDirection="start"
-          encryptedClassName="text-white/40"
-        />
-      ) : (
-        // Reserve space (hidden behind the intro) so there's no layout shift.
-        <span className={cn("opacity-0")}>{text}</span>
-      )}
+        <span className="absolute inset-0 block">
+          <DecryptedText
+            text={text}
+            animateOn="view"
+            sequential
+            speed={22}
+            revealDirection="start"
+            encryptedClassName="text-white/40"
+          />
+        </span>
+      ) : null}
     </div>
   );
 }

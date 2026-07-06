@@ -47,12 +47,12 @@ export function ResultsBento() {
             <div
               key={tile.label}
               className={cn(
-                "relative flex min-h-45 flex-col justify-end overflow-hidden p-7 md:flex-[1.4]",
+                "group relative flex min-h-45 flex-col justify-end overflow-hidden p-7 transition-[flex,transform] duration-500 ease-out-expo md:flex-[1.4] md:hover:flex-[2.4]",
                 i === 0 ? "md:min-h-70" : "md:min-h-82",
                 tile.className
               )}
             >
-              <p className="text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none">
+              <p className="origin-bottom-left text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none transition-transform duration-500 ease-out-expo group-hover:scale-125">
                 {tile.value}
               </p>
               <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
@@ -91,7 +91,7 @@ export function ResultsBento() {
                   Visa approvals, first attempt
                 </p>
               </div>
-              <div className="relative h-40 overflow-hidden rounded-sm border border-white/10 sm:h-45 md:h-50">
+              <div className="relative h-40 overflow-hidden border border-white/10 sm:h-45 md:h-50">
                 <Image
                   src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80"
                   alt="Graduates throwing their caps at a commencement ceremony."
@@ -105,11 +105,11 @@ export function ResultsBento() {
 
           <div
             className={cn(
-              "relative flex min-h-45 flex-col justify-end overflow-hidden p-7 md:min-h-95 md:flex-[1.4]",
+              "group relative flex min-h-45 flex-col justify-end overflow-hidden p-7 transition-[flex,transform] duration-500 ease-out-expo md:min-h-95 md:flex-[1.4] md:hover:flex-[2.4]",
               trailingTile.className
             )}
           >
-            <p className="text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none">
+            <p className="origin-bottom-left text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none transition-transform duration-500 ease-out-expo group-hover:scale-125">
               {trailingTile.value}
             </p>
             <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
@@ -118,7 +118,7 @@ export function ResultsBento() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-6 flex justify-center rounded-full bg-ink px-6 py-4 text-center text-paper">
+        <Reveal delay={0.1} className="mt-6 flex justify-center bg-ink px-6 py-4 text-center text-paper">
           <p className="text-pretty text-sm">
             Your numbers could be next — a free consultation is where every story here
             began.

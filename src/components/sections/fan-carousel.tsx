@@ -14,6 +14,12 @@ type FanCarouselProps = {
   items: FanCard[];
 };
 
+/** Card frame: boxy, shadowed; the active card advertises expansion. */
+const cnCard = (isActive: boolean) =>
+  `absolute h-72 w-44 overflow-hidden border border-ink/10 shadow-raise will-change-transform md:h-100 md:w-60 ${
+    isActive ? "cursor-zoom-in" : "cursor-pointer"
+  }`;
+
 /** Signed shortest wrap-around distance from the active card. */
 function offsetFrom(active: number, index: number, length: number): number {
   let d = index - active;
@@ -29,6 +35,7 @@ function offsetFrom(active: number, index: number, length: number): number {
  */
 export function FanCarousel({ items }: FanCarouselProps) {
   const [active, setActive] = useState(0);
+  const [expanded, setExpanded] = useState<FanCard | null>(null);
   const activeItem = items[active];
 
   const go = (dir: 1 | -1) =>
@@ -36,22 +43,25 @@ export function FanCarousel({ items }: FanCarouselProps) {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="relative flex h-105 w-full items-center justify-center overflow-hidden md:h-125">
+      {/* tall enough that even the outermost, dropped cards stay in frame */}
+      <div className="relative flex h-[34rem] w-full items-center justify-center overflow-hidden md:h-[42rem]">
         {items.map((item, i) => {
           const d = offsetFrom(active, i, items.length);
           const abs = Math.abs(d);
           const visible = abs <= 3;
+          const isActive = d === 0;
           return (
             <motion.button
               key={item.label}
               type="button"
-              aria-label={`Show ${item.label}`}
-              onClick={() => setActive(i)}
-              className="absolute h-88 w-50 cursor-pointer overflow-hidden rounded-xl border border-ink/10 shadow-raise will-change-transform md:h-105 md:w-60"
+              aria-label={isActive ? `Expand ${item.label}` : `Show ${item.label}`}
+              onClick={() => (isActive ? setExpanded(item) : setActive(i))}
+              whileHover={isActive ? { y: -10 } : {}}
+              className={cnCard(isActive)}
               initial={false}
               animate={{
-                x: `${d * 8.4}rem`,
-                y: `${abs * abs * 1.7}rem`,
+                x: `${d * 7.6}rem`,
+                y: `${abs * abs * 0.9}rem`,
                 rotate: d * 7,
                 scale: visible ? 1 - abs * 0.075 : 0.3,
                 opacity: visible ? 1 : 0,
@@ -73,10 +83,62 @@ export function FanCarousel({ items }: FanCarouselProps) {
               <span className="absolute inset-x-0 bottom-0 p-4 text-left font-display text-lg text-white">
                 {item.label}
               </span>
+              {isActive ? (
+                <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center bg-ink/60 text-white backdrop-blur-sm">
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M15 3h6v6" />
+                    <path d="M9 21H3v-6" />
+                    <path d="m21 3-7 7" />
+                    <path d="m3 21 7-7" />
+                  </svg>
+                </span>
+              ) : null}
             </motion.button>
           );
         })}
       </div>
+
+      {/* expanded view: the image opens large with its words beneath */}
+      <AnimatePresence>
+        {expanded ? (
+          <motion.div
+            key="fan-expanded"
+            role="dialog"
+            aria-modal="true"
+            aria-label={expanded.label}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setExpanded(null)}
+            className="fixed inset-0 z-90 flex cursor-zoom-out flex-col items-center justify-center gap-5 bg-ink/95 p-6"
+          >
+            <motion.img
+              src={expanded.image}
+              alt={expanded.label}
+              initial={{ scale: 0.94 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="max-h-[70vh] w-auto max-w-full object-contain"
+            />
+            <p className="font-display text-2xl text-paper">{expanded.label}</p>
+            {expanded.sub ? (
+              <p className="max-w-md text-center text-sm text-paper/70">
+                {expanded.sub}
+              </p>
+            ) : null}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <div className="z-10 mt-6 flex items-center gap-4">
         <button

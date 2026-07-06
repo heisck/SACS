@@ -1,4 +1,5 @@
 import InfiniteMenu, { type InfiniteMenuItem } from "@/components/menu/infinite-menu";
+import { ScrollDownButton } from "@/components/motion/scroll-down-button";
 
 const steps = [
   {
@@ -50,6 +51,8 @@ export function HomeProcess() {
   return (
     <section data-snap className="relative h-dvh w-full bg-ink">
       <InfiniteMenu items={journey} />
+      {/* The drag canvas eats touch scrolling — give phones a way out. */}
+      <ScrollDownButton />
     </section>
   );
 }

@@ -104,11 +104,12 @@ export function HomeManifesto() {
       data-snap
       className="relative isolate flex h-dvh items-center overflow-hidden bg-paper"
     >
-      <div className="absolute inset-0 z-0" aria-hidden>
+      {/* Hovering a photo lifts its wash and slows that column right down. */}
+      <div className="absolute inset-0 z-0">
         {columns.map((c) => (
           <div
             key={c.left}
-            className="rising-col absolute top-0 flex -translate-x-1/2 flex-col gap-24"
+            className="rising-col group/col absolute top-0 flex -translate-x-1/2 flex-col gap-24 hover:[animation-play-state:paused]!"
             style={{
               left: c.left,
               width: c.width,
@@ -120,7 +121,7 @@ export function HomeManifesto() {
             {[...c.images, ...c.images].map((src, i) => (
               <div
                 key={i}
-                className={`relative ${heights[i % heights.length]} w-full overflow-hidden`}
+                className={`group/tile relative ${heights[i % heights.length]} w-full overflow-hidden`}
               >
                 <Image
                   src={src}
@@ -129,15 +130,18 @@ export function HomeManifesto() {
                   sizes="144px"
                   className="object-cover"
                 />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-paper/55 transition-opacity duration-500 group-hover/tile:opacity-0"
+                />
               </div>
             ))}
           </div>
         ))}
-        <div className="absolute inset-0 bg-paper/55" />
       </div>
 
-      <Container className="relative z-10">
-        <h2 className="flex flex-col-reverse items-start font-sans text-[clamp(2rem,7vw,6rem)] font-extrabold leading-[0.95] tracking-tighter text-ink">
+      <Container className="pointer-events-none relative z-10">
+        <h2 className="flex flex-col-reverse items-start font-sans text-[clamp(2.75rem,9vw,6rem)] font-extrabold leading-[0.95] tracking-tighter text-ink [text-shadow:0_0_18px_var(--color-paper)]">
           <span className="sr-only">
             Talent is everywhere. Opportunity shouldn&apos;t be the barrier.
           </span>
@@ -146,7 +150,7 @@ export function HomeManifesto() {
               key={line}
               aria-hidden
               className="block overflow-hidden py-[0.06em]"
-              style={{ marginLeft: `${i * 7}vw` }}
+              style={{ marginLeft: `calc(${i} * clamp(0.75rem, 4.5vw, 7vw))` }}
             >
               <span className="manifesto-line block will-change-transform">
                 {line}

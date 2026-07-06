@@ -1,6 +1,7 @@
 "use client";
 
 import { gsap } from "gsap";
+import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -30,6 +31,8 @@ type StaggeredMenuProps = {
   displayItemNumbering?: boolean;
   className?: string;
   logoUrl?: string;
+  /** Hide the wordmark in the header (e.g. when the hero owns the corner). */
+  showLogo?: boolean;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
   accentColor?: string;
@@ -54,6 +57,7 @@ export function StaggeredMenu({
   displayItemNumbering = true,
   className,
   logoUrl = "/images/logo.svg",
+  showLogo = true,
   menuButtonColor = "#fff",
   openMenuButtonColor = "#fff",
   accentColor = "#5227FF",
@@ -63,6 +67,7 @@ export function StaggeredMenu({
   onMenuOpen,
   onMenuClose
 }: StaggeredMenuProps) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -415,15 +420,17 @@ export function StaggeredMenu({
 
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG logo in vendored menu */}
-          <img
-            src={logoUrl}
-            alt="SACS"
-            className="sm-logo-img"
-            draggable={false}
-            width={110}
-            height={24}
-          />
+          {showLogo ? (
+            /* eslint-disable-next-line @next/next/no-img-element -- static SVG logo in vendored menu */
+            <img
+              src={logoUrl}
+              alt="SACS"
+              className="sm-logo-img"
+              draggable={false}
+              width={110}
+              height={24}
+            />
+          ) : null}
         </div>
         <button
           ref={toggleBtnRef}
@@ -469,6 +476,7 @@ export function StaggeredMenu({
                     className="sm-panel-item"
                     href={it.link}
                     aria-label={it.ariaLabel ?? it.label}
+                    aria-current={pathname === it.link ? "page" : undefined}
                     data-index={idx + 1}
                   >
                     <span className="sm-panel-itemLabel">{it.label}</span>

@@ -37,7 +37,7 @@ export function ContactForm() {
 
   if (isSubmitSuccessful) {
     return (
-      <div className="flex flex-col items-start gap-3 rounded-xl border border-line bg-surface p-8">
+      <div className="flex flex-col items-start gap-3 border border-line bg-surface p-8">
         <CircleCheck className="text-success" size={28} />
         <h2 className="font-display text-2xl">Thank you — we&apos;ll be in touch.</h2>
         <p className="text-pretty text-ink-soft">
