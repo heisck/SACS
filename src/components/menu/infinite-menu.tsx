@@ -582,7 +582,9 @@ class InfiniteGridMenu {
   }
 
   #init(onInit) {
-    this.gl = this.canvas.getContext("webgl2", { antialias: true, alpha: false });
+    // Transparent canvas so the giant title behind it shows through and the
+    // image discs visibly overlap it.
+    this.gl = this.canvas.getContext("webgl2", { antialias: true, alpha: true });
     const gl = this.gl;
     if (!gl) throw new Error("No WebGL 2 context!");
     this.viewportSize = vec2.fromValues(

@@ -125,7 +125,7 @@
   right: 0;
   width: clamp(260px, 38vw, 420px);
   height: 100%;
-  background: #f5f0e8;
+  background: #fafafa;
   display: flex;
   flex-direction: column;
   padding: 6em 2em 2em 2em;
@@ -190,7 +190,7 @@
 
 .sm-panel-item {
   position: relative;
-  color: #17140f;
+  color: #0a0a0a;
   font-weight: 700;
   font-size: clamp(2.25rem, 5vw, 3.5rem);
   cursor: pointer;
@@ -249,7 +249,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--sm-accent, #a9772b);
+  color: var(--sm-accent, #0a0a0a);
 }
 
 .sm-socials-list {
@@ -266,7 +266,7 @@
 .sm-socials-link {
   font-size: 1.05rem;
   font-weight: 500;
-  color: #17140f;
+  color: #0a0a0a;
   text-decoration: none;
   position: relative;
   padding: 2px 0;
@@ -277,7 +277,7 @@
 }
 
 .sm-socials-link:hover {
-  color: var(--sm-accent, #a9772b);
+  color: var(--sm-accent, #0a0a0a);
 }
 
 .sm-socials-list:hover .sm-socials-link:not(:hover) {
@@ -285,7 +285,7 @@
 }
 
 .sm-socials-link:focus-visible {
-  outline: 2px solid var(--sm-accent, #a9772b);
+  outline: 2px solid var(--sm-accent, #0a0a0a);
   outline-offset: 3px;
 }
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Fraunces, Inter } from "next/font/google";
+import { Orbitron } from "next/font/google";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
@@ -9,17 +9,12 @@ import "../components/menu/staggered-menu.css";
 import "../components/menu/flowing-menu.css";
 import "../components/menu/infinite-menu.css";
 
-const inter = Inter({
+/* Single brand face across the whole system. Orbitron is a variable font
+ * (weights 400–900, no italic — italics render as synthetic oblique). */
+const orbitron = Orbitron({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-orbitron",
   display: "swap"
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  style: ["normal", "italic"]
 });
 
 export const metadata: Metadata = {
@@ -41,7 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html
       lang="en"
-      className={cn(inter.variable, fraunces.variable)}
+      className={cn(orbitron.variable)}
       suppressHydrationWarning
     >
       <body>

@@ -5,13 +5,14 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true"
 });
 
+// Note: no `upgrade-insecure-requests` here — browsers ignore it in
+// report-only policies and log a console warning for it.
 const cspReportOnly = [
   "default-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "object-src 'none'",
-  "upgrade-insecure-requests"
+  "object-src 'none'"
 ].join("; ");
 
 const securityHeaders = [
@@ -53,6 +54,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }]
+  },
   async headers() {
     return [
       {

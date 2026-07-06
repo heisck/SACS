@@ -1,0 +1,130 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Container, Section } from "@/components/ui/container";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { Reveal } from "@/components/motion/reveal";
+import { cn } from "@/lib/cn";
+
+type StatTile = {
+  value: string;
+  label: string;
+  className: string;
+};
+
+const tiles: StatTile[] = [
+  { value: "4×", label: "More offers per applicant", className: "bg-gold-soft text-ink" },
+  { value: "70%", label: "Leave with funding secured", className: "bg-clay text-white" }
+];
+
+const trailingTile: StatTile = {
+  value: "100%",
+  label: "Guided to day one abroad",
+  className: "bg-slate text-white"
+};
+
+/**
+ * Staggered stat band — small colour tiles rising toward a featured story
+ * card, in the style of the case-studies bento.
+ */
+export function ResultsBento() {
+  return (
+    <Section className="border-t border-line">
+      <Container>
+        <div className="max-w-2xl">
+          <Eyebrow>Results</Eyebrow>
+          <h2 className="mt-5 text-balance text-[clamp(2rem,4.5vw,3.5rem)]">
+            Outcomes that speak for themselves.
+          </h2>
+          <p className="mt-5 text-pretty text-lg text-ink-soft">
+            From first shortlist to a stamped visa, our students see it through — with
+            funding to match.
+          </p>
+        </div>
+
+        <Reveal className="mt-12 flex flex-col gap-3 md:flex-row md:items-end md:gap-0">
+          {tiles.map((tile, i) => (
+            <div
+              key={tile.label}
+              className={cn(
+                "relative flex min-h-45 flex-col justify-end overflow-hidden p-7 md:flex-[1.4]",
+                i === 0 ? "md:min-h-70" : "md:min-h-82",
+                tile.className
+              )}
+            >
+              <p className="text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none">
+                {tile.value}
+              </p>
+              <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
+                {tile.label}
+              </p>
+            </div>
+          ))}
+
+          <article className="relative flex min-h-115 flex-col overflow-hidden bg-ink p-8 text-paper md:flex-[4.4] md:p-10">
+            <div className="max-w-75">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] opacity-80">
+                Student story
+              </p>
+              <h3 className="mt-2 text-balance font-display text-[clamp(1.4rem,2.4vw,1.9rem)] leading-tight">
+                From Legon to a funded Master&apos;s in Delft.
+              </h3>
+              <p className="mt-3 text-pretty text-sm leading-relaxed opacity-90">
+                A focused shortlist, a sharper SOP, and a scholarship application that
+                landed — the same route we map for every student.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-soft transition-colors hover:text-paper"
+              >
+                Start your route
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="mt-8 grid flex-1 grid-cols-1 items-end gap-5 sm:grid-cols-[1fr_1.05fr]">
+              <div>
+                <p className="text-[clamp(3.25rem,5.5vw,4.5rem)] font-semibold leading-none">
+                  92%
+                </p>
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+                  Visa approvals, first attempt
+                </p>
+              </div>
+              <div className="relative h-40 overflow-hidden rounded-sm border border-white/10 sm:h-45 md:h-50">
+                <Image
+                  src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80"
+                  alt="Graduates throwing their caps at a commencement ceremony."
+                  fill
+                  sizes="(min-width: 768px) 30vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </article>
+
+          <div
+            className={cn(
+              "relative flex min-h-45 flex-col justify-end overflow-hidden p-7 md:min-h-95 md:flex-[1.4]",
+              trailingTile.className
+            )}
+          >
+            <p className="text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-none">
+              {trailingTile.value}
+            </p>
+            <p className="mt-2 max-w-32 text-[11px] font-semibold uppercase tracking-[0.12em]">
+              {trailingTile.label}
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1} className="mt-6 flex justify-center rounded-full bg-ink px-6 py-4 text-center text-paper">
+          <p className="text-pretty text-sm">
+            Your numbers could be next — a free consultation is where every story here
+            began.
+          </p>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}

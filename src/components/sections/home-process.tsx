@@ -2,50 +2,45 @@ import InfiniteMenu, { type InfiniteMenuItem } from "@/components/menu/infinite-
 
 const steps = [
   {
-    n: "01",
     title: "Discovery",
     description: "We learn your goals, field, and budget.",
-    color: "#a9772b"
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
   },
   {
-    n: "02",
     title: "Shortlist",
     description: "Programmes matched to you, not a generic list.",
-    color: "#b4542f"
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
   },
   {
-    n: "03",
     title: "Apply",
     description: "Applications, SOPs, and documents handled end to end.",
-    color: "#2f3a44"
+    image:
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80"
   },
   {
-    n: "04",
     title: "Scholarships",
     description: "We surface and pursue the funding you qualify for.",
-    color: "#c9a14e"
+    image:
+      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80"
   },
   {
-    n: "05",
     title: "Visa & interview",
     description: "Documentation and mock interviews until you're ready.",
-    color: "#7c3c1c"
+    image:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
   },
   {
-    n: "06",
     title: "Departure",
     description: "Housing, travel, and settling-in support.",
-    color: "#3a322a"
+    image:
+      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80"
   }
 ];
 
-const disc = (n: string, color: string) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" fill="${color}"/><text x="256" y="312" font-family="Georgia, serif" font-size="240" font-weight="700" fill="#f5f0e8" text-anchor="middle">${n}</text></svg>`
-  )}`;
-
 const journey: InfiniteMenuItem[] = steps.map((s) => ({
-  image: disc(s.n, s.color),
+  image: s.image,
   link: "#",
   title: s.title,
   description: s.description

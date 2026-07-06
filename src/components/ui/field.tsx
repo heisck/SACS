@@ -17,7 +17,7 @@ export function Field({ id, label, error, children, className, optional }: Field
       <label htmlFor={id} className="text-sm font-medium text-ink">
         {label}
         {optional ? (
-          <span className="ml-1 font-normal text-muted">(optional)</span>
+          <span className="ml-1 font-normal text-muted-foreground">(optional)</span>
         ) : null}
       </label>
       {children}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -8,14 +9,15 @@ import { AnimatePresence, motion } from "motion/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-// Neutral, labelled image slots — drop an <Image fill className="object-cover" />
-// into each `[data-asset-slot]` card later; object-cover keeps it undistorted.
-type Card = { id: string; label: string; aspect: string; group: number };
+type Card = { id: string; label: string; aspect: string; group: number; image: string };
 
 const groupTitles = [
   "One team for the whole journey.",
   "Your degree, somewhere remarkable in Europe."
 ];
+
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=80`;
 
 const cards: Card[] = [
   // Group 0 — what we do
@@ -23,32 +25,101 @@ const cards: Card[] = [
     id: "selection",
     label: "University & course selection",
     aspect: "16 / 10",
-    group: 0
+    group: 0,
+    image: unsplash("photo-1541339907198-e08756dedf3f")
   },
   {
     id: "scholarships",
     label: "Scholarship & financial aid",
     aspect: "1 / 1",
-    group: 0
+    group: 0,
+    image: unsplash("photo-1523580494863-6f3031224c94")
   },
   {
     id: "applications",
     label: "Application prep & submission",
     aspect: "1 / 1",
-    group: 0
+    group: 0,
+    image: unsplash("photo-1454165804606-c3d57bc86b40")
   },
-  { id: "sop", label: "Statement of purpose", aspect: "3 / 4", group: 0 },
-  { id: "visa", label: "Visa & interview coaching", aspect: "16 / 10", group: 0 },
-  { id: "predeparture", label: "Pre-departure support", aspect: "1 / 1", group: 0 },
+  {
+    id: "sop",
+    label: "Statement of purpose",
+    aspect: "3 / 4",
+    group: 0,
+    image: unsplash("photo-1434030216411-0b793f4b4173")
+  },
+  {
+    id: "visa",
+    label: "Visa & interview coaching",
+    aspect: "16 / 10",
+    group: 0,
+    image: unsplash("photo-1523240795612-9a054b0db644")
+  },
+  {
+    id: "predeparture",
+    label: "Pre-departure support",
+    aspect: "1 / 1",
+    group: 0,
+    image: unsplash("photo-1436491865332-7a61a109cc05")
+  },
   // Group 1 — destinations
-  { id: "germany", label: "Germany", aspect: "1 / 1", group: 1 },
-  { id: "netherlands", label: "Netherlands", aspect: "3 / 4", group: 1 },
-  { id: "sweden", label: "Sweden", aspect: "16 / 10", group: 1 },
-  { id: "france", label: "France", aspect: "1 / 1", group: 1 },
-  { id: "ireland", label: "Ireland", aspect: "3 / 4", group: 1 },
-  { id: "italy", label: "Italy", aspect: "1 / 1", group: 1 },
-  { id: "belgium", label: "Belgium", aspect: "16 / 10", group: 1 },
-  { id: "finland", label: "Finland", aspect: "1 / 1", group: 1 }
+  {
+    id: "germany",
+    label: "Germany",
+    aspect: "1 / 1",
+    group: 1,
+    image: unsplash("photo-1560969184-10fe8719e047")
+  },
+  {
+    id: "netherlands",
+    label: "Netherlands",
+    aspect: "3 / 4",
+    group: 1,
+    image: unsplash("photo-1534351590666-13e3e96b5017")
+  },
+  {
+    id: "sweden",
+    label: "Sweden",
+    aspect: "16 / 10",
+    group: 1,
+    image: unsplash("photo-1467269204594-9661b134dd2b")
+  },
+  {
+    id: "france",
+    label: "France",
+    aspect: "1 / 1",
+    group: 1,
+    image: unsplash("photo-1502602898657-3e91760cbb34")
+  },
+  {
+    id: "ireland",
+    label: "Ireland",
+    aspect: "3 / 4",
+    group: 1,
+    image: unsplash("photo-1549918864-48ac978761a4")
+  },
+  {
+    id: "italy",
+    label: "Italy",
+    aspect: "1 / 1",
+    group: 1,
+    image: unsplash("photo-1552832230-c0197dd311b5")
+  },
+  {
+    id: "belgium",
+    label: "Belgium",
+    aspect: "16 / 10",
+    group: 1,
+    image: unsplash("photo-1499856871958-5b9627545d1a")
+  },
+  {
+    id: "finland",
+    label: "Finland",
+    aspect: "1 / 1",
+    group: 1,
+    image: unsplash("photo-1519677100203-a0e668c92439")
+  }
 ];
 
 export function ServicesGallery() {
@@ -124,11 +195,21 @@ export function ServicesGallery() {
             key={c.id}
             id={c.id}
             data-group={c.group}
-            data-asset-slot="card-image"
             className="relative flex w-full shrink-0 items-end overflow-hidden bg-surface p-7 md:h-full md:w-auto"
             style={{ aspectRatio: c.aspect }}
           >
-            <h3 className="font-display text-2xl text-ink">{c.label}</h3>
+            <Image
+              src={c.image}
+              alt={c.label}
+              fill
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/15 to-transparent"
+            />
+            <h3 className="relative font-display text-2xl text-white">{c.label}</h3>
           </article>
         ))}
       </div>

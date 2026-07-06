@@ -1,10 +1,7 @@
 import { IntroReveal } from "@/components/motion/intro-reveal";
 import { SnapController } from "@/components/motion/snap-controller";
-import {
-  StaggeredMenu,
-  type StaggeredMenuItem,
-  type StaggeredMenuSocialItem
-} from "@/components/menu/staggered-menu";
+import { SiteMenu } from "@/components/site/site-menu";
+import { PreHero } from "@/components/sections/pre-hero";
 import { HeroScene } from "@/components/sections/hero-scene";
 import { HomeManifesto } from "@/components/sections/home-manifesto";
 import { ServicesGallery } from "@/components/sections/services-gallery";
@@ -14,48 +11,34 @@ import { Panel } from "@/components/sections/panel";
 import { FlowingMenu, type FlowingMenuItem } from "@/components/menu/flowing-menu";
 import { SiteFooter } from "@/components/site/site-footer";
 
-const menuItems: StaggeredMenuItem[] = [
-  { label: "Home", link: "/", ariaLabel: "Go to home" },
-  { label: "Services", link: "/services", ariaLabel: "View our services" },
-  {
-    label: "Universities",
-    link: "/universities",
-    ariaLabel: "Universities & destinations"
-  },
-  { label: "About", link: "/about", ariaLabel: "About SACS" },
-  { label: "Contact", link: "/contact", ariaLabel: "Contact us" }
-];
-
-const socialItems: StaggeredMenuSocialItem[] = [
-  { label: "LinkedIn", link: "#" },
-  { label: "Instagram", link: "#" },
-  { label: "Facebook", link: "#" }
-];
-
 const statItems: FlowingMenuItem[] = [
   {
     link: "/about",
     text: "Masters & PhD",
     tagline: "Degree levels we place",
-    image: "/images/hero-graduate.png"
+    image:
+      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80"
   },
   {
     link: "/universities",
     text: "Europe-wide",
     tagline: "Study destinations",
-    image: "/images/hero-graduate.png"
+    image:
+      "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=80"
   },
   {
     link: "/services",
     text: "End-to-end",
     tagline: "Shortlist to visa",
-    image: "/images/hero-graduate.png"
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
   },
   {
     link: "/contact",
     text: "1-on-1",
     tagline: "Dedicated counselling",
-    image: "/images/hero-graduate.png"
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
   }
 ];
 
@@ -65,36 +48,32 @@ export default function HomePage() {
       <IntroReveal />
       <SnapController />
 
-      <StaggeredMenu
-        items={menuItems}
-        socialItems={socialItems}
-        displaySocials
-        displayItemNumbering
-        position="right"
-        logoUrl="/images/logo.svg"
-        menuButtonColor="#ffffff"
-        openMenuButtonColor="#17140f"
-        accentColor="#a9772b"
-        colors={["#2f3a44", "#a9772b"]}
-        changeMenuColorOnOpen
-        isFixed
-      />
+      {/* First screen is light paper now, so the toggle opens dark. */}
+      <SiteMenu scheme="dark" />
 
       <main id="main">
-        <HeroScene />
+        <PreHero />
+        <div id="story">
+          <HeroScene />
+        </div>
         <HomeManifesto />
-        <ServicesGallery />
+        {/* GSAP pins the gallery inside a pin-spacer (a DOM move React can't
+            see). This wrapper keeps main's child list React-owned so hot
+            reloads don't crash with insertBefore errors. */}
+        <div>
+          <ServicesGallery />
+        </div>
 
         <HomeProcess />
 
         <section data-snap className="h-dvh w-full">
           <FlowingMenu
             items={statItems}
-            bgColor="#17140f"
-            textColor="#f5f0e8"
-            marqueeBgColor="#c9a14e"
-            marqueeTextColor="#17140f"
-            borderColor="#2a2620"
+            bgColor="#0a0a0a"
+            textColor="#fafafa"
+            marqueeBgColor="#c9c9c9"
+            marqueeTextColor="#0a0a0a"
+            borderColor="#171717"
           />
         </section>
 

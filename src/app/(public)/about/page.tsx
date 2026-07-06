@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Container, Section } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { PageHeader } from "@/components/sections/page-header";
+import { TestimonialsReel } from "@/components/sections/testimonials-reel";
 import { CtaBand } from "@/components/sections/cta-band";
 import { SectionBg } from "@/components/sections/section-bg";
 import { Reveal } from "@/components/motion/reveal";
@@ -16,15 +17,24 @@ export const metadata: Metadata = {
 const values = [
   {
     title: "Personalized",
-    body: "No two students are the same. Every shortlist, SOP, and plan is built around you."
+    body: "No two students are the same. Every shortlist, SOP, and plan is built around you.",
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+    alt: "A counsellor working one-on-one with a student."
   },
   {
     title: "Honest",
-    body: "Straight guidance on your real chances, costs, and the funding worth chasing."
+    body: "Straight guidance on your real chances, costs, and the funding worth chasing.",
+    image:
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=900&q=80",
+    alt: "Notes and planning on paper during an advising session."
   },
   {
     title: "Relentless",
-    body: "We stay with you through every deadline, document, and decision — to day one abroad."
+    body: "We stay with you through every deadline, document, and decision — to day one abroad.",
+    image:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80",
+    alt: "Students pushing through a working session together."
   }
 ];
 
@@ -35,6 +45,10 @@ export default function AboutPage() {
         eyebrow="About SACS"
         title="Talent is everywhere. Opportunity shouldn't be the barrier."
         intro="Study Abroad Consultancy Services helps Ghanaian graduates reach Master's and PhD programmes in Europe — with the information, guidance, and funding access that too often go missing."
+        image={{
+          src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
+          alt: "Students working together around a laptop."
+        }}
       />
 
       <Section className="relative isolate">
@@ -60,8 +74,8 @@ export default function AboutPage() {
 
       <section className="relative isolate h-[60vh] min-h-80 w-full overflow-hidden">
         <Image
-          src="/images/hero-graduate.png"
-          alt="A SACS student between maps of Africa and Europe."
+          src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1800&q=80"
+          alt="Graduates throwing their caps in celebration."
           fill
           sizes="100vw"
           className="object-cover object-center"
@@ -81,16 +95,29 @@ export default function AboutPage() {
         <SectionBg tone="cool" />
         <Container>
           <Eyebrow>What we stand for</Eyebrow>
-          <Reveal stagger className="mt-10 grid gap-8 md:grid-cols-3">
+          <Reveal stagger className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-line md:grid-cols-3">
             {values.map((value) => (
-              <div key={value.title}>
-                <h2 className="font-display text-2xl">{value.title}</h2>
-                <p className="mt-3 text-pretty text-ink-soft">{value.body}</p>
+              <div key={value.title} className="group bg-surface">
+                <div className="relative aspect-16/10 overflow-hidden">
+                  <Image
+                    src={value.image}
+                    alt={value.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-7">
+                  <h2 className="font-display text-2xl">{value.title}</h2>
+                  <p className="mt-3 text-pretty text-ink-soft">{value.body}</p>
+                </div>
               </div>
             ))}
           </Reveal>
         </Container>
       </Section>
+
+      <TestimonialsReel />
 
       <CtaBand />
     </>

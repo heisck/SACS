@@ -12,10 +12,16 @@ import { cn } from "@/lib/cn";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// Each word is pinned to a viewport corner; "Study" bleeds out past the
+// top-left corner (clipped by the stage's overflow-hidden). Sizes unchanged.
 const words = [
-  { text: "Study", cursive: false },
-  { text: "without", cursive: true },
-  { text: "Borders", cursive: false }
+  {
+    text: "Study",
+    cursive: false,
+    position: "-top-[0.16em] -left-[0.06em] text-left"
+  },
+  { text: "without", cursive: true, position: "bottom-0 left-0" },
+  { text: "Borders", cursive: false, position: "bottom-0 right-0 text-right" }
 ];
 
 export function HeroScene() {
@@ -69,18 +75,20 @@ export function HeroScene() {
           className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent"
         />
 
-        <h1 className="absolute inset-0 flex flex-col items-center justify-center text-center font-display leading-[0.82] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
+        <h1 className="absolute inset-0 font-display leading-[0.82] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]">
           <span className="sr-only">Study without Borders</span>
           {words.map((w) => (
-            <span key={w.text} aria-hidden className="block">
+            <span
+              key={w.text}
+              aria-hidden
+              className={cn(
+                "absolute block whitespace-nowrap text-[clamp(3rem,12vw,10rem)] font-bold uppercase tracking-tight",
+                w.cursive && "text-[clamp(2rem,7vw,5rem)] italic normal-case",
+                w.position
+              )}
+            >
               {[...w.text].map((ch, i) => (
-                <span
-                  key={`${w.text}-${i}`}
-                  className={cn(
-                    "hero-letter inline-block text-[clamp(3rem,12vw,10rem)] font-bold uppercase tracking-tight",
-                    w.cursive && "text-[clamp(2rem,7vw,5rem)] italic normal-case"
-                  )}
-                >
+                <span key={`${w.text}-${i}`} className="hero-letter inline-block">
                   {ch}
                 </span>
               ))}
@@ -88,7 +96,8 @@ export function HeroScene() {
           ))}
         </h1>
 
-        <div className="hero-extra absolute bottom-8 right-0 z-20 flex flex-col items-end gap-6 p-8 text-right md:bottom-12 md:p-12">
+        {/* Top-right so it clears "Borders", now pinned to the bottom-right. */}
+        <div className="hero-extra absolute right-0 top-20 z-20 flex flex-col items-end gap-6 p-8 text-right md:top-24 md:p-12">
           <HeroSubcopy
             text="We guide Ghanaian students to Master's and PhD admissions and scholarships across Europe, from your first shortlist to a stamped visa."
             delayMs={2600}

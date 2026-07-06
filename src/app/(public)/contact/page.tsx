@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
 import { PageHeader } from "@/components/sections/page-header";
@@ -40,13 +41,26 @@ export default function ContactPage() {
         <SectionBg tone="cool" />
         <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div className="flex flex-col gap-8">
+            <div className="relative aspect-16/10 overflow-hidden rounded-2xl shadow-soft">
+              <Image
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+                alt="The SACS counselling office."
+                fill
+                sizes="(min-width: 1024px) 33vw, 100vw"
+                className="object-cover"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-linear-to-t from-ink/30 to-transparent"
+              />
+            </div>
             {details.map(({ Icon, label, value, href }) => (
               <div key={label} className="flex items-start gap-4">
                 <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink">
                   <Icon size={20} />
                 </span>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                     {label}
                   </p>
                   {href ? (

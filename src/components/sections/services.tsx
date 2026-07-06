@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Award, Compass, FileText, PenLine, Plane, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Container, Section } from "@/components/ui/container";
@@ -11,6 +12,8 @@ type Service = {
   body: string;
   Icon: LucideIcon;
   span: string;
+  /** Full-bleed photo behind the card; copy flips to light-on-ink. */
+  image?: { src: string; alt: string };
 };
 
 // One rectangle, divided by thin lines into mixed squares and rectangles.
@@ -20,7 +23,11 @@ const services: Service[] = [
     title: "University & course selection",
     body: "We shortlist programmes that fit your goals, budget, and profile — not a generic list.",
     Icon: Compass,
-    span: "lg:col-span-2 lg:row-span-2"
+    span: "lg:col-span-2 lg:row-span-2",
+    image: {
+      src: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1400&q=80",
+      alt: "A historic European university building."
+    }
   },
   {
     id: "scholarships",
@@ -48,7 +55,11 @@ const services: Service[] = [
     title: "Visa & interview coaching",
     body: "Documentation and mock interviews so you walk in prepared.",
     Icon: ShieldCheck,
-    span: "lg:col-span-2"
+    span: "lg:col-span-2",
+    image: {
+      src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
+      alt: "A counsellor coaching a student through interview preparation."
+    }
   },
   {
     id: "predeparture",
@@ -75,21 +86,52 @@ export function Services() {
         </div>
 
         <Reveal className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line lg:auto-rows-[13rem] lg:grid-cols-4">
-          {services.map(({ id, title, body, Icon, span }) => (
+          {services.map(({ id, title, body, Icon, span, image }) => (
             <article
               key={id}
               id={id}
               className={cn(
-                "group flex scroll-mt-28 flex-col justify-between gap-6 bg-surface p-7 transition-colors hover:bg-paper",
+                "group relative flex scroll-mt-28 flex-col justify-between gap-6 overflow-hidden p-7 transition-colors",
+                image ? "bg-ink text-white" : "bg-surface hover:bg-paper",
                 span
               )}
             >
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-ink/5 text-ink transition-colors group-hover:bg-gold group-hover:text-white">
+              {image ? (
+                <>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105"
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-linear-to-t from-ink/85 via-ink/35 to-ink/10"
+                  />
+                </>
+              ) : null}
+
+              <span
+                className={cn(
+                  "relative inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors",
+                  image
+                    ? "bg-white/15 text-white backdrop-blur-sm group-hover:bg-gold"
+                    : "bg-ink/5 text-ink group-hover:bg-gold group-hover:text-white"
+                )}
+              >
                 <Icon size={20} />
               </span>
-              <div>
+              <div className="relative">
                 <h3 className="font-display text-xl">{title}</h3>
-                <p className="mt-2 text-pretty text-sm text-ink-soft">{body}</p>
+                <p
+                  className={cn(
+                    "mt-2 text-pretty text-sm",
+                    image ? "text-white/85" : "text-ink-soft"
+                  )}
+                >
+                  {body}
+                </p>
               </div>
             </article>
           ))}

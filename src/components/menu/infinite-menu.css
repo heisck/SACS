@@ -1,4 +1,7 @@
-/* InfiniteMenu (React Bits) — global styles, brand-tuned. */
+/* InfiniteMenu (React Bits) — global styles, brand-tuned.
+ * The canvas (image discs) sits ABOVE the title/description so the discs
+ * roll over and overlap the text; controls carry real colour so they stay
+ * visible against the monochrome stage. */
 
 #infinite-grid-menu-canvas {
   cursor: grab;
@@ -6,6 +9,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  z-index: 1;
   outline: none;
 }
 
@@ -21,8 +25,8 @@
   height: 60px;
   display: grid;
   place-items: center;
-  background: var(--color-gold);
-  border: 4px solid var(--color-ink);
+  background: #cf3030;
+  border: 4px solid #fafafa;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -35,22 +39,29 @@
   font-size: 26px;
 }
 
+/* Giant word centred BEHIND the sphere — the discs overlap it. */
 .face-title {
   user-select: none;
   position: absolute;
   top: 50%;
-  left: 1.6em;
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  color: var(--color-paper);
-  transform: translate(20%, -50%);
+  left: 50%;
+  z-index: 0;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 9vw, 7rem);
+  letter-spacing: -0.03em;
+  color: #fafafa;
+  text-shadow: 0 0 40px rgba(207, 48, 48, 0.35);
+  transform: translate(-50%, -50%);
 }
 
 .face-title.active {
   opacity: 1;
-  transform: translate(20%, -50%);
-  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
   transition: 0.5s ease;
 }
 
@@ -66,16 +77,17 @@
   max-width: 16ch;
   top: 50%;
   right: 2%;
+  z-index: 0;
   font-size: 1.05rem;
   line-height: 1.4;
-  color: color-mix(in oklab, var(--color-paper) 70%, transparent);
+  color: #e07b7b;
   transform: translate(0, -50%);
 }
 
 .face-description.active {
   opacity: 1;
   transform: translate(-30%, -50%);
-  pointer-events: auto;
+  pointer-events: none;
   transition: 0.5s ease;
 }
 

@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Design tokens — "Editorial Split"  (warm sand · deep ink · gold)
- * Mirror of docs/agent/ui-tokens.md. Never hardcode raw hex in JSX.
+ * Design tokens — "Monochrome"  (white paper · black ink · gray steps)
+ * Brand scale below; legacy names (paper/ink/gold/…) are remapped onto
+ * it so every existing class restyles at once. Never hardcode raw hex
+ * in JSX. Success/warning/danger stay chromatic — they are functional
+ * (form validation), not decorative.
  * ------------------------------------------------------------------ */
 @theme {
-  --color-paper: #f5f0e8;
-  --color-surface: #fbf8f2;
-  --color-ink: #17140f;
-  --color-ink-soft: #433b30;
-  --color-muted: #6f6557;
-  --color-line: #e4dac9;
-  --color-gold: #a9772b;
-  --color-gold-soft: #c9a14e;
-  --color-clay: #b4542f;
-  --color-slate: #2f3a44;
+  --color-brand-50: #fafafa;
+  --color-brand-100: #f0f0f0;
+  --color-brand-200: #e0e0e0;
+  --color-brand-300: #c9c9c9;
+  --color-brand-400: #a3a3a3;
+  --color-brand-500: #737373;
+  --color-brand-600: #525252;
+  --color-brand-700: #3d3d3d;
+  --color-brand-800: #262626;
+  --color-brand-900: #171717;
+  --color-brand-950: #0a0a0a;
+
+  --color-paper: var(--color-brand-50);
+  --color-surface: #ffffff;
+  --color-ink: var(--color-brand-950);
+  --color-ink-soft: var(--color-brand-900);
+  --color-line: var(--color-brand-200);
+  --color-gold: var(--color-brand-950);
+  --color-gold-soft: var(--color-brand-300);
+  --color-clay: var(--color-brand-600);
+  --color-slate: var(--color-brand-800);
   --color-success: #2f7d4f;
   --color-warning: #b45309;
   --color-danger: #b3261e;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  /* shadcn semantic aliases — mapped onto the palette above so registry
+   * components (bg-primary, text-muted-foreground, border-border, …)
+   * drop in without class rewrites. `muted` is a SURFACE tone here;
+   * use `muted-foreground` for soft text. */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: var(--color-surface);
+  --color-secondary: var(--color-brand-100);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: #f5f5f5;
+  --color-muted-foreground: var(--color-brand-600);
+  --color-accent: #f5f5f5;
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: var(--color-danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-gold);
+
+  --font-sans: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: 0.375rem;
   --radius-md: 0.625rem;
@@ -116,6 +154,138 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rising-col {
+    animation: none;
+  }
+}
+
+/* Click ripple (used by RippleButton / RippleLink). */
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-ink {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.25;
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Cinematic footer — dark stage that reveals from beneath the page.
+ * Static ticker (no marquee), no hover states; buttons ripple instead.
+ * ------------------------------------------------------------------ */
+.cinematic-footer {
+  --cf-fg: var(--color-paper);
+  --cf-bg: var(--color-ink);
+}
+
+@keyframes cf-breathe {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes cf-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15%,
+  45% {
+    transform: scale(1.2);
+  }
+  30% {
+    transform: scale(1);
+  }
+}
+
+.cf-aurora {
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in oklch, var(--cf-fg) 12%, transparent) 0%,
+    color-mix(in oklch, var(--cf-fg) 5%, transparent) 40%,
+    transparent 70%
+  );
+  animation: cf-breathe 8s ease-in-out infinite alternate;
+}
+
+.cf-grid {
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--cf-fg) 4%, transparent) 1px,
+      transparent 1px
+    );
+  mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent);
+}
+
+.cf-glass-pill {
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklch, var(--cf-fg) 6%, transparent) 0%,
+    color-mix(in oklch, var(--cf-fg) 2%, transparent) 100%
+  );
+  box-shadow:
+    0 10px 30px -10px color-mix(in oklch, var(--cf-bg) 50%, transparent),
+    inset 0 1px 1px color-mix(in oklch, var(--cf-fg) 12%, transparent),
+    inset 0 -1px 2px color-mix(in oklch, var(--cf-bg) 80%, transparent);
+  border: 1px solid color-mix(in oklch, var(--cf-fg) 10%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.cf-giant-text {
+  font-size: 26vw;
+  line-height: 0.75;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklch, var(--cf-fg) 12%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--cf-fg) 14%, transparent) 0%,
+    transparent 60%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.cf-text-glow {
+  background: linear-gradient(
+    180deg,
+    var(--cf-fg) 0%,
+    color-mix(in oklch, var(--cf-fg) 40%, transparent) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px color-mix(in oklch, var(--cf-fg) 15%, transparent));
+}
+
+.cf-heart {
+  animation: cf-heartbeat 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-aurora,
+  .cf-heart {
     animation: none;
   }
 }

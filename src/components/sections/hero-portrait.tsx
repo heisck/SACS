@@ -45,7 +45,7 @@ export function HeroPortrait({ className }: { className?: string }) {
           <circle cx="330" cy="104" r="40" fill="#cdd6dd" opacity="0.22" />
 
           {/* Baobab silhouette (left) */}
-          <g fill="#7c3c1c" opacity="0.85">
+          <g fill="#3d3d3d" opacity="0.85">
             <rect x="58" y="360" width="12" height="120" rx="4" />
             <ellipse cx="64" cy="352" rx="46" ry="20" />
           </g>
@@ -59,7 +59,7 @@ export function HeroPortrait({ className }: { className?: string }) {
           </g>
 
           {/* Figure bridging the seam */}
-          <g fill="#17140f">
+          <g fill="#0a0a0a">
             <circle cx="200" cy="300" r="31" />
             <path d="M150 500 C150 396 168 346 200 346 C232 346 250 396 250 500 Z" />
           </g>
@@ -70,7 +70,7 @@ export function HeroPortrait({ className }: { className?: string }) {
             y1="0"
             x2="200"
             y2="500"
-            stroke="#f5f0e8"
+            stroke="#fafafa"
             strokeOpacity="0.4"
           />
         </g>

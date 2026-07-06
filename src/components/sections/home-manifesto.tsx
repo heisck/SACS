@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -16,27 +17,46 @@ const lines = [
   "the barrier."
 ];
 
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
+
+// Endlessly rising photo columns behind the manifesto.
 const columns = [
   {
     left: "12%",
     width: "9rem",
     duration: "36s",
     delay: "0s",
-    kinds: ["bg-gold", "bg-ink", "bg-gold", "bg-ink"]
+    images: [
+      unsplash("photo-1523580494863-6f3031224c94"),
+      unsplash("photo-1541339907198-e08756dedf3f"),
+      unsplash("photo-1522202176988-66273c2fd55f"),
+      unsplash("photo-1502602898657-3e91760cbb34")
+    ]
   },
   {
     left: "50%",
     width: "8rem",
     duration: "46s",
     delay: "-12s",
-    kinds: ["bg-slate", "bg-clay", "bg-slate", "bg-clay"]
+    images: [
+      unsplash("photo-1534351590666-13e3e96b5017"),
+      unsplash("photo-1523240795612-9a054b0db644"),
+      unsplash("photo-1560969184-10fe8719e047"),
+      unsplash("photo-1434030216411-0b793f4b4173")
+    ]
   },
   {
     left: "85%",
     width: "8rem",
     duration: "40s",
     delay: "-6s",
-    kinds: ["bg-clay", "bg-gold-soft", "bg-clay", "bg-gold-soft"]
+    images: [
+      unsplash("photo-1467269204594-9661b134dd2b"),
+      unsplash("photo-1436491865332-7a61a109cc05"),
+      unsplash("photo-1552832230-c0197dd311b5"),
+      unsplash("photo-1549918864-48ac978761a4")
+    ]
   }
 ];
 
@@ -45,9 +65,6 @@ const heights = ["h-40", "h-28", "h-36", "h-32"];
 export function HomeManifesto() {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
-  // Tracks the user's last real input (wheel/touch), so snap auto-fit scrolling
-  // — which produces no input — never flips the animation direction.
-  const inputDir = useRef(0);
 
   useEffect(() => {
     const el = root.current;
@@ -62,64 +79,19 @@ export function HomeManifesto() {
     return () => io.disconnect();
   }, []);
 
-  useEffect(() => {
-    let lastTouchY = 0;
-    const onWheel = (e: WheelEvent) => {
-      if (e.deltaY !== 0) inputDir.current = e.deltaY > 0 ? 1 : -1;
-    };
-    const onTouchStart = (e: TouchEvent) => {
-      lastTouchY = e.touches[0]?.clientY ?? 0;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      const y = e.touches[0]?.clientY ?? lastTouchY;
-      if (y !== lastTouchY) {
-        inputDir.current = y < lastTouchY ? 1 : -1;
-        lastTouchY = y;
-      }
-    };
-    window.addEventListener("wheel", onWheel, { passive: true });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-    };
-  }, []);
-
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // Letters pour in from above the top edge at their own gravity pace (not
-      // tied to scroll speed). Reverses on scroll up via onLeaveBack.
-      const tl = gsap.timeline({ paused: true });
-      tl.fromTo(
-        ".manifesto-letter",
-        {
-          y: () => -window.innerHeight * 0.6,
-          autoAlpha: 0,
-          rotate: () => gsap.utils.random(-25, 25)
-        },
-        {
-          y: 0,
-          autoAlpha: 1,
-          rotate: 0,
-          ease: "power2.out",
-          duration: 0.9,
-          stagger: { each: 0.045, from: "random" }
-        }
-      );
-
-      ScrollTrigger.create({
-        trigger: root.current,
-        start: "top 85%",
-        end: "bottom top",
-        onUpdate: () => {
-          // Driven by real user input, not raw scroll direction: pour in when the
-          // user scrolls down, pour out only when they scroll up themselves.
-          // Snap auto-fit moves the page without input, so it's ignored.
-          if (inputDir.current === 1) tl.play();
-          else if (inputDir.current === -1) tl.reverse();
+      // Calm line-by-line reveal: each line slides up out of its own mask.
+      gsap.from(".manifesto-line", {
+        yPercent: 110,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse"
         }
       });
     },
@@ -145,12 +117,23 @@ export function HomeManifesto() {
               animationPlayState: active ? "running" : "paused"
             }}
           >
-            {[...c.kinds, ...c.kinds].map((bg, i) => (
-              <div key={i} className={`${heights[i % heights.length]} w-full ${bg}`} />
+            {[...c.images, ...c.images].map((src, i) => (
+              <div
+                key={i}
+                className={`relative ${heights[i % heights.length]} w-full overflow-hidden`}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="144px"
+                  className="object-cover"
+                />
+              </div>
             ))}
           </div>
         ))}
-        <div className="absolute inset-0 bg-paper/40" />
+        <div className="absolute inset-0 bg-paper/55" />
       </div>
 
       <Container className="relative z-10">
@@ -162,18 +145,12 @@ export function HomeManifesto() {
             <span
               key={line}
               aria-hidden
-              className="block"
+              className="block overflow-hidden py-[0.06em]"
               style={{ marginLeft: `${i * 7}vw` }}
             >
-              {[...line].map((ch, j) =>
-                ch === " " ? (
-                  <span key={j} className="inline-block w-[0.28em]" />
-                ) : (
-                  <span key={j} className="manifesto-letter inline-block">
-                    {ch}
-                  </span>
-                )
-              )}
+              <span className="manifesto-line block will-change-transform">
+                {line}
+              </span>
             </span>
           ))}
         </h2>

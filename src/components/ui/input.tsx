@@ -6,7 +6,7 @@ import {
 import { cn } from "@/lib/cn";
 
 const controlBase =
-  "w-full rounded-md border border-line bg-paper px-3.5 text-ink placeholder:text-muted/70 transition-colors focus-visible:border-ink/40 aria-[invalid=true]:border-danger";
+  "w-full rounded-md border border-line bg-paper px-3.5 text-ink placeholder:text-muted-foreground/70 transition-colors focus-visible:border-ink/40 aria-[invalid=true]:border-danger";
 
 export const Input = forwardRef<
   HTMLInputElement,
