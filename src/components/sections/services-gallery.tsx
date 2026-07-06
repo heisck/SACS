@@ -198,7 +198,7 @@ export function ServicesGallery() {
             id={c.id}
             data-group={c.group}
             onClick={() => setLightbox(c)}
-            className="relative flex w-full shrink-0 cursor-zoom-in items-end overflow-hidden bg-surface p-7 md:h-full md:w-auto"
+            className="relative flex w-full shrink-0 cursor-pointer items-end overflow-hidden bg-surface p-7 md:h-full md:w-auto"
             style={{ aspectRatio: c.aspect }}
           >
             <Image
@@ -248,7 +248,7 @@ export function ServicesGallery() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setLightbox(null)}
-            className="fixed inset-0 z-90 flex cursor-zoom-out flex-col items-center justify-center gap-5 bg-ink/95 p-6"
+            className="fixed inset-0 z-90 flex cursor-pointer flex-col items-center justify-center gap-5 bg-ink/95 p-6"
           >
             <motion.img
               src={lightbox.image}

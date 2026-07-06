@@ -120,32 +120,60 @@ function MenuItem({
     };
   }, [text, image, repetitions, speed]);
 
-  // Click-driven: first click slides the marquee in and starts it, the next
-  // click slides it away — no hover behavior.
+  // Hover-driven on pointer devices (slide in from the edge the cursor
+  // entered, slide out toward the edge it left); click toggles on touch,
+  // where there is no hover.
   const [openMarquee, setOpenMarquee] = useState(false);
 
-  const handleToggle = (ev: MouseEvent<HTMLAnchorElement>) => {
-    ev.preventDefault();
-    if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
-    const rect = itemRef.current.getBoundingClientRect();
-    const edge = findClosestEdge(
+  const slideIn = (edge: "top" | "bottom") => {
+    if (!marqueeRef.current || !marqueeInnerRef.current) return;
+    gsap
+      .timeline({ defaults: animationDefaults })
+      .set(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+      .set(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0)
+      .to([marqueeRef.current, marqueeInnerRef.current], { y: "0%" }, 0);
+  };
+
+  const slideOut = (edge: "top" | "bottom") => {
+    if (!marqueeRef.current || !marqueeInnerRef.current) return;
+    gsap
+      .timeline({ defaults: animationDefaults })
+      .to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+      .to(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0);
+  };
+
+  const edgeFromEvent = (ev: MouseEvent<HTMLAnchorElement>) => {
+    const rect = itemRef.current?.getBoundingClientRect();
+    if (!rect) return "top" as const;
+    return findClosestEdge(
       ev.clientX - rect.left,
       ev.clientY - rect.top,
       rect.width,
       rect.height
     );
-    if (!openMarquee) {
-      gsap
-        .timeline({ defaults: animationDefaults })
-        .set(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
-        .set(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0)
-        .to([marqueeRef.current, marqueeInnerRef.current], { y: "0%" }, 0);
-    } else {
-      gsap
-        .timeline({ defaults: animationDefaults })
-        .to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
-        .to(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0);
-    }
+  };
+
+  const hasHover = () =>
+    typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+
+  const handleEnter = (ev: MouseEvent<HTMLAnchorElement>) => {
+    if (!hasHover()) return;
+    slideIn(edgeFromEvent(ev));
+    setOpenMarquee(true);
+  };
+
+  const handleLeave = (ev: MouseEvent<HTMLAnchorElement>) => {
+    if (!hasHover()) return;
+    slideOut(edgeFromEvent(ev));
+    setOpenMarquee(false);
+  };
+
+  const handleToggle = (ev: MouseEvent<HTMLAnchorElement>) => {
+    ev.preventDefault();
+    if (hasHover()) return; // pointer devices morph on hover instead
+    const edge = edgeFromEvent(ev);
+    if (!openMarquee) slideIn(edge);
+    else slideOut(edge);
     setOpenMarquee((v) => !v);
   };
 
@@ -162,6 +190,8 @@ function MenuItem({
         className="menu__item-link"
         href={link}
         onClick={handleToggle}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
         aria-expanded={openMarquee}
         style={{ color: textColor }}
       >

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 
 export type FanCard = {
   label: string;
@@ -14,11 +14,9 @@ type FanCarouselProps = {
   items: FanCard[];
 };
 
-/** Card frame: boxy, shadowed; the active card advertises expansion. */
-const cnCard = (isActive: boolean) =>
-  `absolute h-72 w-44 overflow-hidden border border-ink/10 shadow-raise will-change-transform md:h-100 md:w-60 ${
-    isActive ? "cursor-zoom-in" : "cursor-pointer"
-  }`;
+/** Card frame: boxy, shadowed; plain pointer everywhere (no zoom cursor). */
+const cnCard = (_isActive: boolean) =>
+  "absolute h-72 w-44 cursor-pointer overflow-hidden border border-ink/10 shadow-raise will-change-transform md:h-100 md:w-60";
 
 /** Signed shortest wrap-around distance from the active card. */
 function offsetFrom(active: number, index: number, length: number): number {
@@ -37,6 +35,16 @@ export function FanCarousel({ items }: FanCarouselProps) {
   const [active, setActive] = useState(0);
   const [expanded, setExpanded] = useState<FanCard | null>(null);
   const activeItem = items[active];
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  // Cards pop into the fan the first time the stage scrolls into view; the
+  // stagger delay only applies to that entrance, not to later re-fans.
+  const inView = useInView(stageRef, { once: true, amount: 0.3 });
+  const [entered, setEntered] = useState(false);
+  useEffect(() => {
+    if (!inView) return;
+    const t = setTimeout(() => setEntered(true), 1200);
+    return () => clearTimeout(t);
+  }, [inView]);
 
   const go = (dir: 1 | -1) =>
     setActive((i) => (i + dir + items.length) % items.length);
@@ -44,7 +52,10 @@ export function FanCarousel({ items }: FanCarouselProps) {
   return (
     <div className="flex w-full flex-col items-center">
       {/* tall enough that even the outermost, dropped cards stay in frame */}
-      <div className="relative flex h-[34rem] w-full items-center justify-center overflow-hidden md:h-[42rem]">
+      <div
+        ref={stageRef}
+        className="relative flex h-[34rem] w-full items-center justify-center overflow-hidden md:h-[42rem]"
+      >
         {items.map((item, i) => {
           const d = offsetFrom(active, i, items.length);
           const abs = Math.abs(d);
@@ -58,16 +69,31 @@ export function FanCarousel({ items }: FanCarouselProps) {
               onClick={() => (isActive ? setExpanded(item) : setActive(i))}
               whileHover={isActive ? { y: -10 } : {}}
               className={cnCard(isActive)}
-              initial={false}
-              animate={{
+              initial={{
                 x: `${d * 7.6}rem`,
                 y: `${abs * abs * 0.9}rem`,
                 rotate: d * 7,
-                scale: visible ? 1 - abs * 0.075 : 0.3,
-                opacity: visible ? 1 : 0,
-                zIndex: 10 - abs
+                scale: 0,
+                opacity: 0
               }}
-              transition={{ type: "spring", stiffness: 260, damping: 30 }}
+              animate={
+                inView
+                  ? {
+                      x: `${d * 7.6}rem`,
+                      y: `${abs * abs * 0.9}rem`,
+                      rotate: d * 7,
+                      scale: visible ? 1 - abs * 0.075 : 0.3,
+                      opacity: visible ? 1 : 0,
+                      zIndex: 10 - abs
+                    }
+                  : { scale: 0, opacity: 0 }
+              }
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 30,
+                delay: entered ? 0 : Math.min(abs * 0.06, 0.3)
+              }}
             >
               <Image
                 src={item.image}
@@ -119,7 +145,7 @@ export function FanCarousel({ items }: FanCarouselProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setExpanded(null)}
-            className="fixed inset-0 z-90 flex cursor-zoom-out flex-col items-center justify-center gap-5 bg-ink/95 p-6"
+            className="fixed inset-0 z-90 flex cursor-pointer flex-col items-center justify-center gap-5 bg-ink/95 p-6"
           >
             <motion.img
               src={expanded.image}

@@ -117,10 +117,5 @@
   background-position: 50% 50%;
 }
 
-/* Touch devices have no hover — show the marquee permanently so it still
-   animates without needing a pointer. */
-@media (hover: none) {
-  .marquee {
-    transform: translate3d(0, 0, 0);
-  }
-}
+/* Touch devices have no hover — the marquee is toggled by tap instead
+   (handled in flowing-menu.tsx). */

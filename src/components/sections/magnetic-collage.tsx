@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Route } from "next";
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 import { MaskedLines } from "@/components/motion/masked-lines";
 import { Container } from "@/components/ui/container";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,8 +16,9 @@ type Chip = {
   alt: string;
   /** width in rem */
   w: number;
-  /** position within the section, in % */
-  top: string;
+  /** position within the section, in % — one of top/bottom is set */
+  top?: string;
+  bottom?: string;
   left: string;
   rotate: number;
 };
@@ -49,21 +52,32 @@ const FALLBACK_IMAGES = [
   }
 ];
 
-/** Chip layouts — scattered around the margins, leaving a central corridor for
- * the headline. Positions are in % so they track viewport size. */
-const CHIP_LAYOUT: Omit<Chip, "src" | "alt">[] = [
+/** Chip layouts — scattered around the margins, leaving a central corridor
+ * for the headline. Positions are in % so they track viewport size. Bottom
+ * chips anchor with `bottom` instead of `top` so their full 3/4-aspect height
+ * always stays inside the section regardless of viewport height. */
+const CHIP_LAYOUT: (Omit<Chip, "src" | "alt" | "top"> & {
+  top?: string;
+  bottom?: string;
+})[] = [
   { w: 9, top: "9%", left: "4%", rotate: -6 },
   { w: 11, top: "15%", left: "82%", rotate: 5 },
-  { w: 10, top: "60%", left: "5%", rotate: 4 },
-  { w: 8.5, top: "66%", left: "81%", rotate: -5 },
-  { w: 7, top: "79%", left: "28%", rotate: 8 },
-  { w: 7.5, top: "75%", left: "64%", rotate: -7 }
+  { w: 10, bottom: "22%", left: "5%", rotate: 4 },
+  { w: 8.5, bottom: "16%", left: "81%", rotate: -5 },
+  { w: 7, bottom: "5%", left: "28%", rotate: 8 },
+  { w: 7.5, bottom: "7%", left: "64%", rotate: -7 }
 ];
 
-const TAG_LAYOUT: { text: string; top: string; left: string; rotate: number }[] = [
+const TAG_LAYOUT: {
+  text: string;
+  top?: string;
+  bottom?: string;
+  left: string;
+  rotate: number;
+}[] = [
   { text: "", top: "44%", left: "7%", rotate: -3 },
   { text: "", top: "38%", left: "86%", rotate: 3 },
-  { text: "", top: "83%", left: "47%", rotate: -2 }
+  { text: "", bottom: "4%", left: "47%", rotate: -2 }
 ];
 
 type MagneticCollageProps = {
@@ -95,6 +109,22 @@ export function MagneticCollage({
   className
 }: MagneticCollageProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Entrance: chips + tags pop into view with a springy scale-up stagger.
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      gsap.from(".mc-float", {
+        scale: 0,
+        autoAlpha: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        stagger: 0.09,
+        delay: 0.15
+      });
+    },
+    { scope: sectionRef }
+  );
 
   const images = image
     ? [{ src: image.src, alt: image.alt }, ...FALLBACK_IMAGES]
@@ -143,7 +173,14 @@ export function MagneticCollage({
     window.addEventListener("pointerleave", onLeave);
 
     let raf = 0;
+    // Let the pop-in entrance (GSAP, also writes transform) finish first so
+    // the two animations don't fight over the same property.
+    const startAt = performance.now() + 1600;
     const tick = () => {
+      if (performance.now() < startAt) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
       const rect = section.getBoundingClientRect();
       for (let i = 0; i < floaters.length; i++) {
         const el = floaters[i];
@@ -187,7 +224,7 @@ export function MagneticCollage({
     <header
       ref={sectionRef}
       className={cn(
-        "relative isolate flex min-h-dvh w-full items-center overflow-hidden bg-paper",
+        "relative isolate flex min-h-dvh w-full items-center overflow-hidden bg-paper py-24 md:py-28",
         className
       )}
     >
@@ -200,6 +237,7 @@ export function MagneticCollage({
           style={
             {
               top: c.top,
+              bottom: c.bottom,
               left: c.left,
               width: `${c.w}rem`,
               transform: `rotate(${c.rotate}deg)`
@@ -227,6 +265,7 @@ export function MagneticCollage({
           style={
             {
               top: t.top,
+              bottom: t.bottom,
               left: t.left,
               transform: `rotate(${t.rotate}deg)`
             } as CSSProperties
@@ -254,7 +293,15 @@ export function MagneticCollage({
           </MaskedLines>
           {intro ? (
             <MaskedLines delay={0.15}>
-              <p className="mx-auto mt-6 max-w-xl text-pretty text-lg text-ink-soft">
+              {/* Paper halo keeps the microtext legible if a chip drifts
+                  underneath, without changing the text colour. */}
+              <p
+                className="mx-auto mt-6 max-w-xl text-pretty text-lg text-ink-soft"
+                style={{
+                  textShadow:
+                    "0 0 10px var(--color-paper), 0 0 18px var(--color-paper)"
+                }}
+              >
                 {intro}
               </p>
             </MaskedLines>
