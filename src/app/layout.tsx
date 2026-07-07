@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Orbitron } from "next/font/google";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
+import { ThemeColorSync } from "@/components/motion/theme-color-sync";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
 import "./globals.css";
@@ -32,6 +33,12 @@ export const metadata: Metadata = {
   }
 };
 
+/* Initial status-bar colour: the homepage opens on the dark hero.
+ * ThemeColorSync retunes it per-section as the user scrolls. */
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a"
+};
+
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html
@@ -40,6 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       suppressHydrationWarning
     >
       <body>
+        <ThemeColorSync />
         <div className="grain-layer" aria-hidden />
         <a
           href="#main"

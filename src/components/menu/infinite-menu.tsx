@@ -541,6 +541,9 @@ class InfiniteGridMenu {
   smoothRotationVelocity = 0;
   scaleFactor = 1.0;
   movementActive = false;
+  /** When false (section off-screen) the loop idles without animating or
+   * drawing, so the sphere costs nothing while scrolled past. */
+  visible = true;
 
   constructor(
     canvas,
@@ -576,8 +579,10 @@ class InfiniteGridMenu {
     this.#time = time;
     this.#deltaFrames = this.#deltaTime / this.TARGET_FRAME_DURATION;
     this.#frames += this.#deltaFrames;
-    this.#animate(this.#deltaTime);
-    this.#render();
+    if (this.visible) {
+      this.#animate(this.#deltaTime);
+      this.#render();
+    }
     requestAnimationFrame((t) => this.run(t));
   }
 
@@ -928,12 +933,21 @@ export default function InfiniteMenu({
         scale
       );
     }
+    // Pause the WebGL loop while the section is off-screen — scrolling the
+    // rest of the page shouldn't pay for an invisible sphere.
+    const io = new IntersectionObserver(([entry]) => {
+      if (sketch) sketch.visible = !!entry?.isIntersecting;
+    });
+    if (canvas) io.observe(canvas);
     const handleResize = () => {
       if (sketch) sketch.resize();
     };
     window.addEventListener("resize", handleResize);
     handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      io.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [items, scale]);
 
   const handleButtonClick = () => {
