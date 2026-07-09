@@ -59,7 +59,7 @@
     "pino": "10.3.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-easy-crop": "^6.0.2",
+    "react-easy-crop": "^6.2.2",
     "react-email": "6.6.4",
     "react-hook-form": "7.80.0",
     "resend": "6.14.0",
