@@ -20,6 +20,6 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Build Docker image
         run: docker build --file Dockerfile --tag sacs-study-abroad:${{ github.sha }} .
